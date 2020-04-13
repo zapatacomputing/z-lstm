@@ -8,6 +8,7 @@ import pandas as pd
 def noisy_sine_generation():
   # Generating data: sine function
   time = np.arange(0, 100, 0.1)
+  noisestd = 0.2
   data = np.sin(time) + np.random.normal(scale=noisestd, size=len(time))
 
   # Testing numpy Array

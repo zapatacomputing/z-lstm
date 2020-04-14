@@ -48,4 +48,3 @@ spec:
         arguments:
           parameters:
           - resources: [hello]
-          - numsamples: 2

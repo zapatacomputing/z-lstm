@@ -17,7 +17,7 @@ def noisy_sine_generation(timerange=100, timestep=0.1, noisestd=0.2):
     time = np.arange(0, int(timerange), float(timestep))
  
     # Generating data: sine function
-    data = np.sin(time) + np.random.normal(scale=noisestd, size=len(time))
+    data = np.sin(time) + np.random.normal(scale=float(noisestd), size=len(time))
 
     # Testing numpy Array
     print('Data shape from numpy: ', data.shape)

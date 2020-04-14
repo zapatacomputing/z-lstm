@@ -6,7 +6,10 @@ import sys
 import numpy as np
 import pandas as pd
 
-def noisy_sine_generation(timerange=100, timestep=0.1, noisestd=0.2):
+def noisy_sine_generation(timerange, timestep, noisestd):
+  print('timerange = ', timerange)
+  print('timestep = ', timestep)
+  print('noisestd = ', noisestd)
 
   try:
     time = np.arange(0, timerange, timestep)

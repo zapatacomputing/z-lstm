@@ -16,9 +16,9 @@ spec:
       # `parameters` represent initialization values for a template. 
       parameters:
       - name: docker-image
-        value: zapatacomputing/open-pack-ml
+        value: open-pack-ml
       - name: docker-tag
-        value: production
+        value: latest
 
       # The `command` parameter is required because that is what is run by `generic-task`.
       - name: command

@@ -47,4 +47,9 @@ spec:
         template: make-data
         arguments:
           parameters:
+          - timerange: "50"
+          - timestep: "0.1"
+          - noisestd: "0.4"
+          - docker-image: open-pack-ml
+          - docker-tag: latest
           - resources: [hello]

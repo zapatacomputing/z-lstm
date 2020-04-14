@@ -7,9 +7,6 @@ import numpy as np
 import pandas as pd
 
 def noisy_sine_generation(timerange=100, timestep=0.1, noisestd=0.2):
-  # timerange = int(timerange)
-  # timestep = float(timestep)
-  # noisestd = float(noisestd)
 
   try:
     time = np.arange(0, timerange, timestep)
@@ -23,7 +20,7 @@ def noisy_sine_generation(timerange=100, timestep=0.1, noisestd=0.2):
     # Testing pandas DataFrame
     data_df = pd.DataFrame(data, columns=['Values'])
     print('Data shape from pandas: ', data_df.shape)
-    print(data_df.head(3))
+    print(data_df.head())
   except:
     e = sys.exc_info()[0]
     print(e)

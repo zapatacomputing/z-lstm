@@ -24,6 +24,11 @@ spec:
       - name: command
         value: python3 main.py
 
+      # The `numsamples` parameter allows you to change the number of samples created in your workflow
+      - name: numsamples
+        # This value acts as a default but can be overridden in the workflow
+        value: 1
+
       # This section creates a script called `main.py` containing the code below under `data`. It must be under the `app` directory in order for the command above to locate it.
       artifacts:
       - name: main-script
@@ -31,7 +36,7 @@ spec:
         raw:
           data: |
             from orquestra import noisy_sine_generation
-            noisy_sine_generation()
+            noisy_sine_generation('{{inputs.parameters.numsamples}}')
 
     # This section is where output artifacts are listed. They must be listed here, or else they will get deleted when the template completes. They must be under the `app` directory in order to be saved.
     # outputs:

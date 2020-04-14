@@ -50,6 +50,6 @@ spec:
           - timerange: "50"
           - timestep: "0.1"
           - noisestd: "0.4"
-          - docker-image: open-pack-ml
+          - docker-image: z-ml
           - docker-tag: latest
           - resources: [hello]

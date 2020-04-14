@@ -16,7 +16,7 @@ spec:
       # `parameters` represent initialization values for a template. 
       parameters:
       - name: docker-image
-        value: open-pack-ml
+        value: z-ml
       - name: docker-tag
         value: latest
 

@@ -39,7 +39,7 @@ spec:
         raw:
           data: |
             from orquestra import preprocess_data, save_data, load_data
-            data = load_data({{inputs.artifacts.data}})
+            data = load_data('data.json')
             preprocessed_data = preprocess_data(data["data"],
                                   {{inputs.parameters.train_perc}},
                                   {{inputs.parameters.window_size}})

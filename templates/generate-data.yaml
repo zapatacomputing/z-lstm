@@ -40,9 +40,10 @@ spec:
         raw:
           data: |
             from orquestra import noisy_sine_generation
-            noisy_sine_generation({{inputs.parameters.timerange}},
+            data = noisy_sine_generation({{inputs.parameters.timerange}},
                                   {{inputs.parameters.timestep}},
                                   {{inputs.parameters.noisestd}})
+            save_data(data, 'data.json')
 
       # This section is where output artifacts are listed. They must be listed here, or else they will get deleted when the template completes. They must be under the `app` directory in order to be saved.
     outputs:

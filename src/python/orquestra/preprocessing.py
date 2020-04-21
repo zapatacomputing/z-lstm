@@ -6,6 +6,14 @@ import sys
 import numpy as np
 import pandas as pd
 
+def create_dataset(x, y, time_steps=1):
+  xs, ys = [], []
+  for i in range(len(x) - time_steps):
+      v = x.iloc[i:(i + time_steps)].values
+      xs.append(v)
+      ys.append(y.iloc[i + time_steps])
+  return np.array(xs), np.array(ys)
+
 def preprocess_data(data, trainperc = 0.8, time_steps = 10):
   time = data["time"]
   values = data["values"]
@@ -28,12 +36,9 @@ def preprocess_data(data, trainperc = 0.8, time_steps = 10):
 
   print(xtrain.shape, ytrain.shape)
 
-def create_dataset(x, y, time_steps=1):
-  xs, ys = [], []
-  for i in range(len(x) - time_steps):
-      v = x.iloc[i:(i + time_steps)].values
-      xs.append(v)
-      ys.append(y.iloc[i + time_steps])
-  return np.array(xs), np.array(ys)
+  data_dict = {}
+  data_dict["data"] = {'xtrain': xtrain.tolist(), 'ytrain': ytrain.tolist(), 'xtest': xtest.tolist(), 'ytest': ytest.tolist()}
+  data_dict["schema"] = "orquestra-v1-data"
 
-
+  with open("data.json",'w') as f:
+      f.write(json.dumps(data_dict, indent=2)) # Write data to file as this will serve as output artifact

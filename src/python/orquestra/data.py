@@ -7,33 +7,34 @@ import sys
 import numpy as np
 import pandas as pd
 
-def noisy_sine_generation(timerange, timestep, noisestd):
+def noisy_sine_generation(timerange, timestep, noisestd) -> dict:
   print('timerange = ', timerange)
   print('timestep = ', timestep)
   print('noisestd = ', noisestd)
+
+  data_dict = {}
 
   try:
     time = np.arange(0, timerange, timestep)
  
     # Generating data: sine function
-    data = np.sin(time) + np.random.normal(scale=noisestd, size=len(time))
-
-    # Testing numpy Array
-    print('Data shape from numpy: ', data.shape)
+    values = np.sin(time) + np.random.normal(scale=noisestd, size=len(time))
+    print('Values shape from numpy: ', values.shape)
     
-    # Testing pandas DataFrame
-    data_df = pd.DataFrame(data, columns=['Values'])
-    print('Data shape from pandas: ', data_df.shape)
+    # Making pandas DataFrame
+    data_df = pd.DataFrame(values, index=time, columns=['values'])
+
+    print('Data shape from pandas:')
+    print(data_df.shape)
+    print('Data frame header:')
     print(data_df.head())
+
+    data_dict = {}
+    data_dict["data"] = data_df.to_dict()
   except:
     e = sys.exc_info()[0]
     print(e)
     print('Something went wrong!')
 
-  data_dict = {}
-  data_dict["data"] = {'time' : time.tolist(), 'values': data.tolist()}
-  data_dict["schema"] = "orquestra-v1-data"
-
-  with open("data.json",'w') as f:
-      f.write(json.dumps(data_dict, indent=2)) # Write data to file as this will serve as output artifact
+  return data_dict
 

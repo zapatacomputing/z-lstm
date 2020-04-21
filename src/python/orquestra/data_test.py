@@ -6,24 +6,14 @@ import os
 class TestDataGeneration(unittest.TestCase):
 
   def test_noisy_sine_generation(self):
-    timerange = 100
-    timestep = 0.1
-    noisestd = 0.5
-    noisy_sine_generation(timerange, timestep, noisestd)
+    time_range = 100
+    time_step = 0.1
+    noise_std = 0.5
+    data_dict = noisy_sine_generation(time_range, time_step, noise_std)
 
-    filename = 'data.json'
-
-    with open(filename) as json_file:
-      datafile = json.load(json_file)
-
-    self.assertEqual(len(datafile["data"]["time"]), 1000)
-    self.assertEqual(len(datafile["data"]["values"]), 1000)
-    self.assertEqual(datafile["data"]["time"][-1], timerange-timestep)
-
-    try:
-      os.remove(filename)
-    except OSError:
-      pass
+    self.assertEqual(len(list(data_dict["data"]["values"].keys())), time_range/time_step)
+    self.assertEqual(len(list(data_dict["data"]["values"].values())), time_range/time_step)
+    self.assertEqual(list(data_dict["data"]["values"].keys())[-1], time_range-time_step)
 
 if __name__ == '__main__':
     unittest.main()

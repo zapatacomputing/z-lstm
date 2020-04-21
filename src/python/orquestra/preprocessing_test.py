@@ -1,42 +1,43 @@
 import unittest
-from data import noisy_sine_generation
+from preprocessing import preprocess_data, create_dataset
 import json
-import os
+import numpy as np
+import pandas as pd
 
 class TestCreateData(unittest.TestCase):
+  def test_create_dataset(self):
     x = [1,2,3,4]
     y = [5,6,7,8]
     time_steps = 2
-    xx, yy = create_dataset(x, y, time_steps)
-    
-    self.assertEqual(xx, [[1,2],[2,3],[3,4]])
-    self.assertEqual(xx, [[5,6],[6,7],[7,8]])
+
+    df = pd.DataFrame(data=np.transpose([x, y]), columns=['x','y'])
+
+    xx, yy = create_dataset(df, time_steps)
+
+    self.assertTrue((xx == [[1,2],[2,3]]).all())
+    self.assertTrue((yy == [7, 8]).all())
 
 class TestPreprocessData(unittest.TestCase):
-    def test_preprocess_data(self):
-        
-        trainperc = 0.8
-        timesteps = 10
+  def test_preprocess_data(self):
+    
+    train_perc = 0.8
+    window_size = 10
 
-        # Come up with a dummy dataset
-        data = {"time": , "values":}
+    test_file_name = 'test_data.json'
 
-        preprocess_data(data, trainperc, time_steps)
+    with open(test_file_name) as test_json_file:
+      test_data = json.load(test_json_file)
 
-        filename = 'data.json'
+    data = preprocess_data(test_data, train_perc, window_size)
+    train_dict = data[0]
+    test_dict = data[1]
+    train_window_dict = data[2]
+    test_window_dict = data[3]
 
-        with open(filename) as json_file:
-            datafile = json.load(json_file)
-
-        self.assertEqual(len(datafile["xtrain"]), 8)
-        self.assertEqual(len(datafile["xtest"]), 2)
-        self.assertEqual(len(datafile["ytrain"]), 8)
-        self.assertEqual(len(datafile["ytest"]), 2)
-
-        try:
-        os.remove(filename)
-        except OSError:
-        pass
+    self.assertEqual(len(train_dict["data"]["time"]), 400)
+    self.assertEqual(len(test_dict["data"]["time"]), 100)
+    self.assertEqual(len(train_window_dict["data"]["windows"]), 390)
+    self.assertEqual(len(test_window_dict["data"]["next_vals"]), 90)
 
 if __name__ == '__main__':
     unittest.main()

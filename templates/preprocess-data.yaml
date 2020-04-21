@@ -5,7 +5,7 @@ spec:
   templates:
 
   # This is the name of the template, which is used to reference it in the workflow. This field is required.
-  - name: generate-data
+  - name: preprocess-data
 
     # `generic-task` is the supertemplate that all templates (that don't contain a `steps` section) must inherit from
     parent: generic-task
@@ -24,14 +24,11 @@ spec:
       - name: command
         value: python3 main.py
 
-      # The `numsamples` parameter allows you to change the number of samples created in your workflow
-      - name: timerange
+      - name: train_perc
         # This value acts as a default but can be overridden in the workflow
-        value: 100
-      - name: timestep
-        value: 0.1
-      - name: noisestd
-        value: 0.2
+        value: 0.8
+      - name: window_size
+        value: 10
 
       # This section creates a script called `main.py` containing the code below under `data`. It must be under the `app` directory in order for the command above to locate it.
       artifacts:
@@ -39,14 +36,25 @@ spec:
         path: /app/main.py
         raw:
           data: |
-            from orquestra import noisy_sine_generation, save_data
-            data = noisy_sine_generation({{inputs.parameters.timerange}},
-                                  {{inputs.parameters.timestep}},
-                                  {{inputs.parameters.noisestd}})
-            save_data([data], ['data.json'])
+            from orquestra import preprocess_data, save_data, load_data
+            data = load_data({{inputs.artifacts.data}})
+            preprocessed_data = preprocess_data(data["data"],
+                                  {{inputs.parameters.train_perc}},
+                                  {{inputs.parameters.window_size}})
+            filenames = ['training_data.json',
+                        'testing_data.json',
+                        'training_data_windows.json',
+                        'testing_data_windows.json']
+            save_data(preprocessed_data, filenames)
 
       # This section is where output artifacts are listed. They must be listed here, or else they will get deleted when the template completes. They must be under the `app` directory in order to be saved.
     outputs:
       artifacts:
-      - name: data
-        path: /app/data.json
+      - name: training_data
+        path: /app/training_data.json
+      - name: testing_data
+        path: /app/testing_data.json
+      - name: training_data_windows
+        path: /app/training_data_windows.json
+      - name: testing_data_windows
+        path: /app/testing_data_windows.json

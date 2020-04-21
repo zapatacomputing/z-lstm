@@ -22,10 +22,7 @@ def noisy_sine_generation(time_range, time_step, noise_std) -> dict:
     print('Values shape from numpy: ', values.shape)
     
     # Making pandas DataFrame
-    # data_df = pd.DataFrame([time, values], index=time, columns=['time','values'])
-    data_df = pd.DataFrame(columns=['time','values'])
-    data_df['time'] = time
-    data_df['values'] = values
+    data_df = pd.DataFrame(data=np.transpose([time, values]), columns=['time','values'])
 
     print('Data shape from pandas:')
     print(data_df.shape)

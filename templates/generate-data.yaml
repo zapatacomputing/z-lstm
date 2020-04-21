@@ -5,7 +5,7 @@ spec:
   templates:
 
   # This is the name of the template, which is used to reference it in the workflow. This field is required.
-  - name: make-data
+  - name: generate-data
 
     # `generic-task` is the supertemplate that all templates (that don't contain a `steps` section) must inherit from
     parent: generic-task

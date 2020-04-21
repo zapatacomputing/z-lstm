@@ -7,24 +7,24 @@ kind: Workflow
 # List resources needed by workflow.
 resources:
 
-# A resource named `welcome` that is a public git repo. All the fields here are required except branch, which defaults to master.
-- name: hello
+# A resource named `z-lstm` that is a public git repo. All the fields here are required except branch, which defaults to master.
+- name: z-lstm
   type: git
   parameters:
-    url: "git@github.com:zapatacomputing/tutorial-2-hello-ml.git"
+    url: "git@github.com:zapatacomputing/z-lstm.git"
     branch: "master"
 
 # Data to help you easily work with your workflow
 metadata:
 
   # Prefix for workflow ID
-  generateName: hello-ml-
+  generateName: lstm-tutorial-
 
 # Data for running the workflow
 spec:
 
   # Think of this as identifying the `main` function -- this tells the workflow which template to start with
-  entrypoint: hello
+  entrypoint: lstm
 
   # Initializing global variables for use in workflow
   arguments:
@@ -33,23 +33,23 @@ spec:
     # Where output data is stored -- Must be `quantum-engine` for compatibility with Orquestra data services
     - s3-bucket: quantum-engine
     # Path where output data is stored within the `s3-bucket` -- can be anything you want
-    - s3-key: tutorials/hello-ml/
+    - s3-key: tutorials/lstm/
 
   # The steps of the workflow
   templates:
 
-  # `hello` is a template that just contains a list of `steps`, which are other templates
-  - name: hello
+  # `lstm` is a template that just contains a list of `steps`, which are other templates
+  - name: lstm
     steps:
 
-    # This template runs the `make-data` template in the `hello` resource
-    - - name: test-np-and-pd
-        template: make-data
+    # This template runs the `generate-data` template in the `hello` resource
+    - - name: generate-data
+        template: generate-data
         arguments:
           parameters:
+          - resources: [z-lstm]
+          - docker-image: z-ml
+          - docker-tag: latest
           - timerange: "50"
           - timestep: "0.1"
           - noisestd: "0.4"
-          - docker-image: z-ml
-          - docker-tag: latest
-          - resources: [hello]

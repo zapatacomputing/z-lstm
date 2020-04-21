@@ -53,3 +53,15 @@ spec:
           - timerange: "50"
           - timestep: "0.1"
           - noisestd: "0.4"
+    - - name: preprocess-data
+        template: preprocess-data
+        arguments:
+          parameters:
+          - resources: [z-lstm]
+          - docker-image: z-ml
+          - docker-tag: latest
+          - train_perc: "0.8"
+          - window_size: "10"
+          artifacts:
+          - name: data
+            from: '{{steps.generate-data.outputs.artifacts.data}}'

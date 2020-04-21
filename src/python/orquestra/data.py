@@ -30,10 +30,10 @@ def noisy_sine_generation(timerange, timestep, noisestd):
     print(e)
     print('Something went wrong!')
 
-    data_dict = {}
-    data_dict["data"] = data_df
-    data_dict["schema"] = "orquestra-v1-data"
+  data_dict = {}
+  data_dict["data"] = {'time' : time.tolist(), 'values': data.tolist()}
+  data_dict["schema"] = "orquestra-v1-data"
 
-    with open("data.json",'w') as f:
-        f.write(json.dumps(data_dict, indent=2)) # Write data to file as this will serve as output artifact
+  with open("data.json",'w') as f:
+      f.write(json.dumps(data_dict, indent=2)) # Write data to file as this will serve as output artifact
 

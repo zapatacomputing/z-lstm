@@ -7,18 +7,18 @@ import sys
 import numpy as np
 import pandas as pd
 
-def noisy_sine_generation(timerange, timestep, noisestd) -> dict:
-  print('timerange = ', timerange)
-  print('timestep = ', timestep)
-  print('noisestd = ', noisestd)
+def noisy_sine_generation(time_range, time_step, noise_std) -> dict:
+  print('time_range = ', time_range)
+  print('time_step = ', time_step)
+  print('noise_std = ', noise_std)
 
   data_dict = {}
 
   try:
-    time = np.arange(0, timerange, timestep)
+    time = np.arange(0, time_range, time_step)
  
     # Generating data: sine function
-    values = np.sin(time) + np.random.normal(scale=noisestd, size=len(time))
+    values = np.sin(time) + np.random.normal(scale=noise_std, size=len(time))
     print('Values shape from numpy: ', values.shape)
     
     # Making pandas DataFrame

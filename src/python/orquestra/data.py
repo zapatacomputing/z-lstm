@@ -2,6 +2,7 @@
 This module generates a set of data.
 """
 
+import json
 import sys
 import numpy as np
 import pandas as pd
@@ -28,4 +29,11 @@ def noisy_sine_generation(timerange, timestep, noisestd):
     e = sys.exc_info()[0]
     print(e)
     print('Something went wrong!')
+
+    data_dict = {}
+    data_dict["data"] = data_df
+    data_dict["schema"] = "orquestra-v1-data"
+
+    with open("data.json",'w') as f:
+        f.write(json.dumps(data_dict, indent=2)) # Write data to file as this will serve as output artifact
 

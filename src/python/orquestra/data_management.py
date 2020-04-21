@@ -5,6 +5,7 @@ import json
 import sys
 import numpy as np
 import pandas as pd
+from typing import TextIO
 
 def save_data(data: dict, filename: str):
   data["schema"] = "orquestra-v1-data"

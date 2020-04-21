@@ -48,12 +48,12 @@ def preprocess_data(data, train_perc = 0.8, window_size = 10):
   test_dict["data"] = test.to_dict()
 
   train_window_dict = {"data":{}}
-  train_window_dict["data"]["windows"] = train_windows
-  train_window_dict["data"]["next_vals"] = train_next_vals
+  train_window_dict["data"]["windows"] = train_windows.tolist()
+  train_window_dict["data"]["next_vals"] = train_next_vals.tolist()
 
   test_window_dict = {"data":{}}
-  test_window_dict["data"]["windows"] = test_windows
-  test_window_dict["data"]["next_vals"] = test_next_vals
+  test_window_dict["data"]["windows"] = test_windows.tolist()
+  test_window_dict["data"]["next_vals"] = test_next_vals.tolist()
 
   return train_dict, test_dict, train_window_dict, test_window_dict
 

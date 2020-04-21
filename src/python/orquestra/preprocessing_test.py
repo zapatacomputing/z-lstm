@@ -34,11 +34,6 @@ class TestPreprocessData(unittest.TestCase):
     train_window_dict = data[2]
     test_window_dict = data[3]
 
-    self.assertIsInstance(train_dict, dict)
-    self.assertIsInstance(test_dict, dict)
-    self.assertIsInstance(train_window_dict, dict)
-    self.assertIsInstance(test_window_dict, dict)
-
     self.assertEqual(len(train_dict["data"]["time"]), 400)
     self.assertEqual(len(test_dict["data"]["time"]), 100)
     self.assertEqual(len(train_window_dict["data"]["windows"]), 390)

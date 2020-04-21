@@ -32,6 +32,8 @@ spec:
 
       # This section creates a script called `main.py` containing the code below under `data`. It must be under the `app` directory in order for the command above to locate it.
       artifacts:
+      - name: data
+        path: /app/data.json
       - name: main-script
         path: /app/main.py
         raw:

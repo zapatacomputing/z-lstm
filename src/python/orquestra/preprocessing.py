@@ -20,6 +20,7 @@ def preprocess_data(data, train_perc = 0.8, window_size = 10):
   df = pd.DataFrame.from_dict(data)
   print("DataFrame head:")
   print(df.head())
+  
   dfsize = df.shape[0]
 
   # Splitting up dataset into Training and Testing datsets

@@ -4,7 +4,7 @@ import json
 import numpy as np
 import pandas as pd
 
-class TestCreateData(unittest.TestCase):
+class TestPreprocessData(unittest.TestCase):
   def test_create_dataset(self):
     x = [1,2,3,4]
     y = [5,6,7,8]
@@ -17,7 +17,6 @@ class TestCreateData(unittest.TestCase):
     self.assertTrue((xx == [[5,6],[6,7]]).all())
     self.assertTrue((yy == [7, 8]).all())
 
-class TestPreprocessData(unittest.TestCase):
   def test_preprocess_data(self):
     
     train_perc = 0.8
@@ -40,4 +39,4 @@ class TestPreprocessData(unittest.TestCase):
     self.assertEqual(len(test_window_dict["data"]["next_vals"]), 90)
 
 if __name__ == '__main__':
-    unittest.main()
+  unittest.main()

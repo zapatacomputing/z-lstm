@@ -1,10 +1,7 @@
 import unittest
 from data import noisy_sine_generation
-import json
-import os
 
 class TestDataGeneration(unittest.TestCase):
-
   def test_noisy_sine_generation(self):
     time_range = 100
     time_step = 0.1
@@ -17,5 +14,5 @@ class TestDataGeneration(unittest.TestCase):
     self.assertEqual(data_dict["data"]["time"][last_index], time_range-time_step)
 
 if __name__ == '__main__':
-    unittest.main()
+  unittest.main()
 

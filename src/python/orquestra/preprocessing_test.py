@@ -12,9 +12,9 @@ class TestCreateData(unittest.TestCase):
 
     df = pd.DataFrame(data=np.transpose([x, y]), columns=['x','y'])
 
-    xx, yy = create_dataset(df, time_steps)
+    xx, yy = create_dataset(df.y, df.y, time_steps)
 
-    self.assertTrue((xx == [[1,2],[2,3]]).all())
+    self.assertTrue((xx == [[5,6],[6,7]]).all())
     self.assertTrue((yy == [7, 8]).all())
 
 class TestPreprocessData(unittest.TestCase):

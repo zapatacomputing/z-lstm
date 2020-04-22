@@ -6,13 +6,7 @@ import sys
 import numpy as np
 import pandas as pd
 
-def create_dataset(df, window_size=1):
-  col1 = df.columns[0]
-  col2 = df.columns[1]
-
-  x = df[col1]
-  y = df[col2]
-
+def create_dataset(x, y, window_size=1):
   xs, ys = [], []
   for i in range(len(x) - window_size):
       v = x.iloc[i:(i + window_size)].values
@@ -37,8 +31,9 @@ def preprocess_data(data, train_perc = 0.8, window_size = 10):
   print(len(train), len(test))
 
   # Reshape to dimensions required by tensorflow: [samples, window_size, n_features]
-  train_windows, train_next_vals = create_dataset(train, window_size)
-  test_windows, test_next_vals = create_dataset(test, window_size)
+  col = df.columns[1]
+  train_windows, train_next_vals = create_dataset(train[col], train[col], window_size)
+  test_windows, test_next_vals = create_dataset(test[col], test[col], window_size)
 
   # Save all 4 data sets to dictionaries
   train_dict = {}

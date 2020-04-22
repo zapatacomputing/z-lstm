@@ -1,5 +1,5 @@
 """
-This module preprocesses the data into windows.
+This module provides methods for loading and saving datasets.
 """
 import json
 import sys

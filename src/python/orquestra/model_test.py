@@ -1,25 +1,28 @@
 import unittest
 import json
-from model import build_model
+from model import build_model, save_model
+from pathlib import Path
+
+from tensorflow.keras.models import model_from_json
 
 class TestModel(unittest.TestCase):
   def test_build_model(self):
-    test_data_file_name = 'test_model_data.json'
-    with open(test_data_file_name) as test_data_json_file:
-      test_data = json.load(test_data_json_file)
+    # Get test data to build the model to fit the dimensions of
+    test_data_file_path = Path("test/test_model_data.json")
+    with open(test_data_file_path) as test_data_file:
+      test_data = json.load(test_data_file)
 
+    # Build the model
     model = build_model(test_data)
 
-    expected_model_file_name = 'test_model.json'
-    with open(expected_model_file_name) as expected_model_json_file:
-      expected_model = json.load(expected_model_json_file)
-    
-    # Remove keras version from result because that may change
-    model_json = model.to_json()
-    model_dict = json.loads(model_json) 
-    model_dict.pop("keras_version", None)
+    # Get expected model out of file
+    expected_model_file_path = Path("test/test_model.json")
+    with open(expected_model_file_path) as expected_model_file:
+      expected_model_json = expected_model_file.read()
 
-    self.assertEqual(model_dict, expected_model)
+    expected_model = model_from_json(expected_model_json)
+
+    self.assertEqual(model.to_json(), expected_model.to_json())
 
 if __name__ == '__main__':
   unittest.main()

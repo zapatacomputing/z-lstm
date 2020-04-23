@@ -45,7 +45,7 @@ spec:
             from orquestra import train_model, load_model, save_model, load_data
             data = load_data('training_data.json')
             model = load_model('model.json')
-            history, model = train_model(model
+            history, model = train_model(model,
                                   data["data"],
                                   {{inputs.parameters.nepochs}},
                                   {{inputs.parameters.batchsize}},

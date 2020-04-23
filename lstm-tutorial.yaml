@@ -78,3 +78,18 @@ spec:
           artifacts:
           - name: preprocessed-data
             from: '{{steps.preprocess-data.outputs.artifacts.testing_data_windows}}'
+    - - name: train-model
+        template: train-model
+        arguments:
+          parameters:
+          - resources: [z-lstm]
+          - docker-image: z-ml
+          - docker-tag: latest
+          - nepochs: "30"
+          - batchsize: "32"
+          - valsplit: "0.1"
+          artifacts:
+          - name: model
+            from: '{{steps.build-model.outputs.artifacts.model}}'
+          - name: training-data
+            from: '{{steps.preprocess-data.outputs.artifacts.training_data_windows}}'

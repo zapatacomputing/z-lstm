@@ -1,0 +1,160 @@
+{
+  "model": {
+    "specs": {
+      "class_name": "Sequential",
+      "config": {
+        "name": "sequential_1",
+        "layers": [
+          {
+            "class_name": "LSTM",
+            "config": {
+              "name": "lstm_1",
+              "trainable": true,
+              "batch_input_shape": [
+                null,
+                10,
+                1
+              ],
+              "dtype": "float32",
+              "return_sequences": false,
+              "return_state": false,
+              "go_backwards": false,
+              "stateful": false,
+              "unroll": false,
+              "time_major": false,
+              "units": 2,
+              "activation": "tanh",
+              "recurrent_activation": "sigmoid",
+              "use_bias": true,
+              "kernel_initializer": {
+                "class_name": "GlorotUniform",
+                "config": {
+                  "seed": null
+                }
+              },
+              "recurrent_initializer": {
+                "class_name": "Orthogonal",
+                "config": {
+                  "gain": 1.0,
+                  "seed": null
+                }
+              },
+              "bias_initializer": {
+                "class_name": "Zeros",
+                "config": {}
+              },
+              "unit_forget_bias": true,
+              "kernel_regularizer": null,
+              "recurrent_regularizer": null,
+              "bias_regularizer": null,
+              "activity_regularizer": null,
+              "kernel_constraint": null,
+              "recurrent_constraint": null,
+              "bias_constraint": null,
+              "dropout": 0.0,
+              "recurrent_dropout": 0.0,
+              "implementation": 2
+            }
+          },
+          {
+            "class_name": "Dropout",
+            "config": {
+              "name": "dropout_1",
+              "trainable": true,
+              "dtype": "float32",
+              "rate": 0.2,
+              "noise_shape": null,
+              "seed": null
+            }
+          },
+          {
+            "class_name": "Dense",
+            "config": {
+              "name": "dense_1",
+              "trainable": true,
+              "dtype": "float32",
+              "units": 1,
+              "activation": "linear",
+              "use_bias": true,
+              "kernel_initializer": {
+                "class_name": "GlorotUniform",
+                "config": {
+                  "seed": null
+                }
+              },
+              "bias_initializer": {
+                "class_name": "Zeros",
+                "config": {}
+              },
+              "kernel_regularizer": null,
+              "bias_regularizer": null,
+              "activity_regularizer": null,
+              "kernel_constraint": null,
+              "bias_constraint": null
+            }
+          }
+        ]
+      },
+      "keras_version": "2.2.4-tf",
+      "backend": "tensorflow"
+    },
+    "weights": [
+      [
+        [
+          -0.8117896318435669,
+          0.08182423561811447,
+          -0.5679832696914673,
+          0.10595153272151947,
+          -0.16319581866264343,
+          0.4674537777900696,
+          -0.53224116563797,
+          0.39797407388687134
+        ]
+      ],
+      [
+        [
+          -0.2334277629852295,
+          0.6616178750991821,
+          0.5198964476585388,
+          0.2837492823600769,
+          -0.18249079585075378,
+          0.32955992221832275,
+          0.04062465950846672,
+          0.1119830459356308
+        ],
+        [
+          -0.21494060754776,
+          0.056217260658741,
+          0.3131595253944397,
+          -0.8034590482711792,
+          -0.2444869577884674,
+          -0.2681363523006439,
+          0.27464422583580017,
+          0.06917791813611984
+        ]
+      ],
+      [
+        0.0012899523135274649,
+        0.002121280413120985,
+        1.0009636878967285,
+        0.9980603456497192,
+        -0.001464096480049193,
+        -0.0007485152455046773,
+        0.0012180927442386746,
+        0.002176097361370921
+      ],
+      [
+        [
+          1.0591570138931274
+        ],
+        [
+          -0.60528165102005
+        ]
+      ],
+      [
+        0.0011295215226709843
+      ]
+    ]
+  },
+  "schema": "orquestra-v1-model"
+}

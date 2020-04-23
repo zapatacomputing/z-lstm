@@ -39,36 +39,71 @@ def build_model(data, hnodes=32, dropout=0.2, learning_rate=0.001) -> dict:
   # Compile model using MSE as loss function to minimize, and Adam as optimiser
   model.compile(
     loss='mean_squared_error',
-    optimizer=keras.optimizers.Adam(learning_rate)        
+    optimizer=keras.optimizers.Adam(learning_rate)
   )
 
   return model
 
-# def train_model(model, data) -> dict:
-#   historyfitting = model.fit(
-#     xtrain, ytrain,
-#     epochs=nepochs,
-#     batch_size=batchsize,
-#     validation_split=valsplit,
-#     verbose=1,
-#     shuffle=False
-#   )
+def train_model(model: Sequential, data: dict, nepochs=30, batchsize=32, valsplit=0.1):
+  windows = np.array(data["windows"])
+  next_vals = np.array(data["next_vals"])
 
-#   return historyfitting
+  if len(windows.shape) == 2:
+    windows = windows.reshape(windows.shape + (1,))
+  
+  fithistory = model.fit(
+    windows, next_vals,
+    epochs=nepochs,
+    batch_size=batchsize,
+    validation_split=valsplit,
+    verbose=1,
+    shuffle=False
+  )
+
+  return fithistory.history, model
 
 def save_model(model: Sequential, filename: str) -> None:
+  model_dict = {"model":{}}
+
   model_json = model.to_json()
-  model_dict = {}
-  model_dict["model"] = json.loads(model_json) 
+  model_dict["model"]["specs"] = json.loads(model_json)
+
+  weights = model.get_weights()
+  weights = nested_arrays_to_lists(weights)
+  model_dict["model"]["weights"] = weights
+
   model_dict["schema"] = "orquestra-v1-model"
 
   with open(filename, "w") as f:
     f.write(json.dumps(model_dict, indent=2))
 
+def nested_arrays_to_lists(obj):
+  if isinstance(obj, np.ndarray):
+    obj = obj.tolist()
+
+  try:
+    for i in range(len(obj)):
+      obj[i] = nested_arrays_to_lists(obj[i])
+  except TypeError:
+    return obj
+
+  return obj
+
 def load_model(filename: str) -> Sequential:
   # load json and create model
   with open(filename) as json_file:
-    loaded_model_json = json_file.read()
+    loaded_model_artifact = json.load(json_file)
 
-  loaded_model = model_from_json(loaded_model_json)
+  loaded_model = json.dumps(loaded_model_artifact["model"]["specs"])
+
+  loaded_model = model_from_json(loaded_model)
+  # TODO: load weights
+  # loaded_model.load_weights("model.h5")
   return loaded_model
+
+def save_loss_history(history, filename: str) -> None:
+  history_dict = {}
+  history_dict["history"] = history
+  history_dict["schema"] = "orquestra-v1-loss-function-history"
+  with open(filename, "w") as f:
+    f.write(json.dumps(history_dict, indent=2))

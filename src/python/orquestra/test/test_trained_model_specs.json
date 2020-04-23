@@ -1,12 +1,12 @@
 {
   "class_name": "Sequential",
   "config": {
-    "name": "sequential_1",
+    "name": "sequential",
     "layers": [
       {
         "class_name": "LSTM",
         "config": {
-          "name": "lstm_1",
+          "name": "lstm",
           "trainable": true,
           "batch_input_shape": [
             null,
@@ -57,7 +57,7 @@
       {
         "class_name": "Dropout",
         "config": {
-          "name": "dropout_1",
+          "name": "dropout",
           "trainable": true,
           "dtype": "float32",
           "rate": 0.2,
@@ -68,7 +68,7 @@
       {
         "class_name": "Dense",
         "config": {
-          "name": "dense_1",
+          "name": "dense",
           "trainable": true,
           "dtype": "float32",
           "units": 1,

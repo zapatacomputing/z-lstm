@@ -5,9 +5,8 @@ import os
 from pathlib import Path
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras.models import Sequential
+from tensorflow.keras.models import Sequential, model_from_json
 import numpy as np
-from tensorflow.keras.models import model_from_json
 
 class TestModel(unittest.TestCase):
   def test_build_model(self):
@@ -41,13 +40,9 @@ class TestModel(unittest.TestCase):
     ))
     model.add(keras.layers.Dropout(0.2))
     model.add(keras.layers.Dense(units=1))
-    model.compile(
-      loss='mean_squared_error',
-      optimizer=keras.optimizers.Adam(0.001)
-    )
 
     old_weights = model.get_weights()
-    history, model = train_model(model, test_data, nepochs=1, batchsize=1, valsplit=0)
+    history, model = train_model(model, test_data, nepochs=1, batchsize=1, valsplit=0, learning_rate=0.001)
     new_weights = model.get_weights()
     
     expected_model_file_path = Path("test/test_trained_model_specs.json")

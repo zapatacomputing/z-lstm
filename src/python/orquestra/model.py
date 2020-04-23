@@ -2,12 +2,12 @@
 This module manipulates an LSTM model.
 """
 
+import json
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.models import Sequential, model_from_json
 import pandas as pd
 import numpy as np
-import json
 
 def build_model(data, hnodes=32, dropout=0.2, learning_rate=0.001) -> dict:
   # Load data into dataframe
@@ -44,13 +44,18 @@ def build_model(data, hnodes=32, dropout=0.2, learning_rate=0.001) -> dict:
 
   return model
 
-def train_model(model: Sequential, data: dict, nepochs=30, batchsize=32, valsplit=0.1):
+def train_model(model: Sequential, data: dict, nepochs=30, batchsize=32, valsplit=0.1, learning_rate=0.001):
   windows = np.array(data["windows"])
   next_vals = np.array(data["next_vals"])
 
   if len(windows.shape) == 2:
     windows = windows.reshape(windows.shape + (1,))
   
+  model.compile(
+    loss='mean_squared_error',
+    optimizer=keras.optimizers.Adam(learning_rate)
+  )
+
   fithistory = model.fit(
     windows, next_vals,
     epochs=nepochs,

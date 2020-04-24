@@ -97,6 +97,18 @@ def nested_arrays_to_lists(obj):
 
   return obj
 
+def nested_lists_to_arrays(obj):
+  if isinstance(obj, list):
+    obj = np.array(obj)
+
+  try:
+    for i in range(len(obj)):
+      obj[i] = nested_lists_to_arrays(obj[i])
+  except TypeError:
+    return obj
+
+  return obj
+
 def load_model(filename: str) -> Sequential:
   # load json and create model
   with open(filename) as json_file:
@@ -105,8 +117,13 @@ def load_model(filename: str) -> Sequential:
   loaded_model = json.dumps(loaded_model_artifact["model"]["specs"])
 
   loaded_model = model_from_json(loaded_model)
-  # TODO: load weights
-  # loaded_model.load_weights("model.h5")
+  
+  weights = loaded_model_artifact["model"]["weights"]
+  # Everything below the top-level list needs to be converted to a numpy array
+  for i in range(len(weights)):
+    weights[i] = nested_lists_to_arrays(weights[i])
+  loaded_model.set_weights(weights)
+
   return loaded_model
 
 def save_loss_history(history, filename: str) -> None:

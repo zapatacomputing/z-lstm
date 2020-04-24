@@ -68,12 +68,45 @@ class TestModel(unittest.TestCase):
     self.assertTrue(isinstance(converted, list))
     self.assertTrue(isinstance(converted[0], list))
     self.assertTrue(isinstance(converted[1], list))
-    self.assertTrue((converted == [[1,2],[3,4]]))
+    self.assertTrue(converted == [[1,2],[3,4]])
+
+  def test_nested_lists_to_arrays(self):
+    list1 = [1, 2]
+    list2 = [3, 4]
+    list_of_lists = [list1, list2]
+
+    converted = nested_lists_to_arrays(list_of_lists)
+
+    self.assertTrue(isinstance(converted, np.ndarray))
+    self.assertTrue(isinstance(converted[0], np.ndarray))
+    self.assertTrue(isinstance(converted[1], np.ndarray))
+    expected = np.array([np.array([1,2]),np.array([3,4])])
+    self.assertTrue((converted == expected).all())
 
   def test_load_model(self):
     model_file = Path("test/test_trained_model.json")
     model = load_model(model_file)
     self.assertTrue(isinstance(model, Sequential))
+    loaded_weights = model.get_weights()
+
+    expected_weights = [
+      np.array(
+        [np.array(
+           [0.1, 0.2, 0.3, 0.4]
+        ).astype('float32')]
+      ),
+      np.array(
+        [np.array(
+          [0.5, 0.6, 0.7, 0.8]
+        ).astype('float32')]
+      ),
+      np.array(
+        [0.9, 0.01, 0.11, 0.21]
+      ).astype('float32'),
+    ]
+
+    for i in range(len(loaded_weights)):
+      self.assertTrue((loaded_weights[i] == expected_weights[i]).all())
 
   def test_save_loss_history(self):
     history = {'loss': [0.3, 0.2, 0.1]}

@@ -22,12 +22,15 @@ def build_model(data, hnodes=32, dropout=0.2, learning_rate=0.001) -> dict:
   print("DataFrame shape:")
   print(df.shape)
 
+  # Gets size of window from length of array in dataframe row 0 col 0
+  window_size = len(df[0][0][0])
+
   model = keras.Sequential()
 
   # Adding one LSTM layer
   model.add(keras.layers.LSTM(
     units=hnodes,
-    input_shape=(df.shape[1], df.shape[2])
+    input_shape=(window_size, df.shape[2])
   ))
   
   # Adding Dropuut

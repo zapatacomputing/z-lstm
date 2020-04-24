@@ -11,7 +11,7 @@ import numpy as np
 class TestModel(unittest.TestCase):
   def test_build_model(self):
     # Get test data to build the model to fit the dimensions of
-    test_data_file_path = Path("test/test_model_data.json")
+    test_data_file_path = Path("test/test_window_data.json")
     with open(test_data_file_path) as test_data_file:
       test_data = json.load(test_data_file)
 
@@ -26,6 +26,8 @@ class TestModel(unittest.TestCase):
     expected_model = model_from_json(expected_model_json)
 
     self.assertEqual(model.to_json(), expected_model.to_json())
+    window_size = len(test_data["windows"][0])
+    self.assertEqual(model.layers[0].input_shape, (None, window_size, 1))
 
   def test_train_model(self):
     test_data_file_path = Path("test/test_window_data.json")

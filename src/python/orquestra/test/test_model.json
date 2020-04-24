@@ -10,7 +10,7 @@
           "trainable": true,
           "batch_input_shape": [
             null,
-            2,
+            10,
             1
           ],
           "dtype": "float32",

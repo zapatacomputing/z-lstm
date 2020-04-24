@@ -19,7 +19,7 @@ class TestModel(unittest.TestCase):
     model = build_model(test_data)
 
     # Get expected model out of file
-    expected_model_file_path = Path("test/test_model.json")
+    expected_model_file_path = Path("test/test_untrained_model_specs.json")
     with open(expected_model_file_path) as expected_model_file:
       expected_model_json = expected_model_file.read()
 
@@ -57,6 +57,35 @@ class TestModel(unittest.TestCase):
     self.assertEqual(len(old_weights), len(new_weights))
     for i in range(len(old_weights)):
       self.assertTrue((old_weights[i] != new_weights[i]).any())
+
+  # How to test this without just redoing code in save_model?
+  def test_save_model(self):
+    model = keras.Sequential()
+    model.add(keras.layers.LSTM(
+      units=1,
+      input_shape=(1,1)
+    ))
+    test_file_name = "tmp.json"
+
+    save_model(model, test_file_name)
+
+    with open(test_file_name) as test_file:
+      saved_model_artifact = json.load(test_file)
+
+    expected_model_artifact = {
+      "model": {
+        "specs": json.loads(model.to_json()),
+        "weights": nested_arrays_to_lists(model.get_weights())
+      },
+      "schema": "orquestra-v1-model"
+    }
+
+    self.assertEqual(expected_model_artifact, saved_model_artifact)
+
+    try:
+      os.remove(test_file_name)
+    except OSError:
+      pass
 
   def test_nested_arrays_to_lists(self):
     arr1 = np.array([1, 2])

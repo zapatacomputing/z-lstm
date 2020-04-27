@@ -42,6 +42,10 @@ class TestModel(unittest.TestCase):
     ))
     model.add(keras.layers.Dropout(0.2))
     model.add(keras.layers.Dense(units=1))
+    model.compile(
+      loss='mean_squared_error',
+      optimizer=keras.optimizers.Adam(0.001)
+    )
 
     old_weights = model.get_weights()
     history, model = train_model(model, test_data, nepochs=1, batchsize=1, valsplit=0, learning_rate=0.001)
@@ -57,6 +61,31 @@ class TestModel(unittest.TestCase):
     self.assertEqual(len(old_weights), len(new_weights))
     for i in range(len(old_weights)):
       self.assertTrue((old_weights[i] != new_weights[i]).any())
+
+  def test_test_model(self):
+    np.random.seed(1)
+    test_data_file_path = Path("test/test_window_data.json")
+    with open(test_data_file_path) as test_data_file:
+      test_data = json.load(test_data_file)
+
+    # Make simple model
+    model = keras.Sequential()
+    model.add(keras.layers.Dense(units=1,
+                kernel_initializer='ones',
+                bias_initializer='zeros'))
+    model.compile(
+      loss='mean_squared_error',
+      optimizer=keras.optimizers.Adam(0.001)
+    )
+
+    predictions = test_model(model, test_data)
+
+    expected_predictions = {'data': [[3.3053510189056396], [3.0758495330810547], [1.956718921661377]]}
+
+    self.assertTrue(isinstance(predictions, dict))
+    self.assertTrue(isinstance(predictions["data"], list))
+    self.assertTrue(isinstance(predictions["data"][0], list))
+    self.assertDictEqual(predictions, expected_predictions)
 
   def test_save_model_h5(self):
     model = keras.Sequential()

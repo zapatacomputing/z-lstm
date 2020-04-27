@@ -93,3 +93,15 @@ spec:
             from: '{{steps.build-model.outputs.artifacts.model}}'
           - name: training-data
             from: '{{steps.preprocess-data.outputs.artifacts.training_data_windows}}'
+    - - name: test-model
+        template: test-model
+        arguments:
+          parameters:
+          - resources: [z-lstm]
+          - docker-image: z-ml
+          - docker-tag: latest
+          artifacts:
+          - name: model
+            from: '{{steps.train-model.outputs.artifacts.trained_model_complete}}'
+          - name: testing-data
+            from: '{{steps.preprocess-data.outputs.artifacts.testing_data_windows}}'

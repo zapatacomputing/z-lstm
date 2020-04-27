@@ -74,7 +74,11 @@ def test_model(model: Sequential, data: dict):
   windows = np.array(data["windows"])
 
   pred = model.predict(windows)
-  return pred
+
+  pred_dict = {}
+  pred_dict["data"] = pred.tolist()
+
+  return pred_dict
 
 def save_model_h5(model: Sequential, filename: str) -> None:
   # model.save(filename)

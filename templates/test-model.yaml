@@ -5,7 +5,7 @@ spec:
   templates:
 
   # This is the name of the template, which is used to reference it in the workflow. This field is required.
-  - name: train-model
+  - name: test-model
 
     # `generic-task` is the supertemplate that all templates (that don't contain a `steps` section) must inherit from
     parent: generic-task
@@ -24,42 +24,24 @@ spec:
       - name: command
         value: python3 main.py
 
-      - name: nepochs
-        # This value acts as a default but can be overridden in the workflow
-        value: 30
-      - name: batchsize
-        value: 32
-      - name: valsplit
-        value: 0.1
-
       # This section creates a script called `main.py` containing the code below under `data`. It must be under the `app` directory in order for the command above to locate it.
       artifacts:
       - name: model
         path: /app/model.h5
-      - name: training-data
-        path: /app/training_data.json
+      - name: testing-data
+        path: /app/testing_data.json
       - name: main-script
         path: /app/main.py
         raw:
           data: |
             from orquestra import *
-            data = load_data('training_data.json')
+            data = load_data('testing_data.json')
             model = load_model_h5('model.h5')
-            history, model = train_model(model,
-                                  data["data"],
-                                  {{inputs.parameters.nepochs}},
-                                  {{inputs.parameters.batchsize}},
-                                  {{inputs.parameters.valsplit}})
-            save_loss_history(history, 'history.json')
-            save_model_h5(model, 'trained_model.h5')
-            save_model_json(model, 'trained_model.json')
+            predictions = test_model(model, data["data"])
+            save_data([predictions], ['predictions.json'])
 
       # This section is where output artifacts are listed. They must be listed here, or else they will get deleted when the template completes. They must be under the `app` directory in order to be saved.
     outputs:
       artifacts:
-      - name: trained_model_complete
-        path: /app/trained_model.h5
-      - name: trained_model
-        path: /app/trained_model.json
-      - name: history
-        path: /app/history.json
+      - name: predictions
+        path: /app/predictions.json

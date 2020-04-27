@@ -70,8 +70,17 @@ def train_model(model: Sequential, data: dict, nepochs=30, batchsize=32, valspli
 
   return fithistory.history, model
 
+def test_model(model: Sequential, data: dict):
+  windows = np.array(data["windows"])
+
+  pred = model.predict(windows)
+  return pred
+
 def save_model_h5(model: Sequential, filename: str) -> None:
-  model.save(filename)
+  # model.save(filename)
+  tf.keras.models.save_model(
+    model, filename, include_optimizer=True
+  )
 
 def load_model_h5(filename: str) -> Sequential:
   model = keras.models.load_model(filename, compile=False)

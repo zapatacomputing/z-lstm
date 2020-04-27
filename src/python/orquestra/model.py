@@ -54,10 +54,10 @@ def train_model(model: Sequential, data: dict, nepochs=30, batchsize=32, valspli
   if len(windows.shape) == 2:
     windows = windows.reshape(windows.shape + (1,))
   
-  model.compile(
-    loss='mean_squared_error',
-    optimizer=keras.optimizers.Adam(learning_rate)
-  )
+  # model.compile(
+  #   loss='mean_squared_error',
+  #   optimizer=keras.optimizers.Adam(learning_rate)
+  # )
 
   fithistory = model.fit(
     windows, next_vals,
@@ -70,7 +70,20 @@ def train_model(model: Sequential, data: dict, nepochs=30, batchsize=32, valspli
 
   return fithistory.history, model
 
-def save_model(model: Sequential, filename: str) -> None:
+def save_model_h5(model: Sequential, filename: str) -> None:
+  model.save(filename)
+
+def load_model_h5(filename: str) -> Sequential:
+  model.load(filename)
+
+def save_loss_history(history, filename: str) -> None:
+  history_dict = {}
+  history_dict["history"] = history
+  history_dict["schema"] = "orquestra-v1-loss-function-history"
+  with open(filename, "w") as f:
+    f.write(json.dumps(history_dict, indent=2))
+
+def save_model_json(model: Sequential, filename: str) -> None:
   model_dict = {"model":{}}
 
   model_json = model.to_json()
@@ -109,7 +122,7 @@ def nested_lists_to_arrays(obj):
 
   return obj
 
-def load_model(filename: str) -> Sequential:
+def load_model_json(filename: str) -> Sequential:
   # load json and create model
   with open(filename) as json_file:
     loaded_model_artifact = json.load(json_file)
@@ -125,10 +138,3 @@ def load_model(filename: str) -> Sequential:
   loaded_model.set_weights(weights)
 
   return loaded_model
-
-def save_loss_history(history, filename: str) -> None:
-  history_dict = {}
-  history_dict["history"] = history
-  history_dict["schema"] = "orquestra-v1-loss-function-history"
-  with open(filename, "w") as f:
-    f.write(json.dumps(history_dict, indent=2))

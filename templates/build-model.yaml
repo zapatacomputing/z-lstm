@@ -40,16 +40,16 @@ spec:
         path: /app/main.py
         raw:
           data: |
-            from orquestra import build_model, save_model, load_data
+            from orquestra import *
             data = load_data('preprocessed_data.json')
             model = build_model(data["data"],
                                   {{inputs.parameters.hnodes}},
                                   {{inputs.parameters.dropout}},
                                   {{inputs.parameters.learning_rate}})
-            save_model(model, 'model.json')
+            save_model_h5(model, 'model.h5')
 
       # This section is where output artifacts are listed. They must be listed here, or else they will get deleted when the template completes. They must be under the `app` directory in order to be saved.
     outputs:
       artifacts:
       - name: model
-        path: /app/model.json
+        path: /app/model.h5

@@ -39,7 +39,7 @@ spec:
         path: /app/main.py
         raw:
           data: |
-            from orquestra import noisy_sine_generation, save_data
+            from orquestra import *
             data = noisy_sine_generation({{inputs.parameters.timerange}},
                                   {{inputs.parameters.timestep}},
                                   {{inputs.parameters.noisestd}})

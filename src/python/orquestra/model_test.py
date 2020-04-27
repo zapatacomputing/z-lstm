@@ -59,15 +59,16 @@ class TestModel(unittest.TestCase):
       self.assertTrue((old_weights[i] != new_weights[i]).any())
 
   # How to test this without just redoing code in save_model?
-  def test_save_model(self):
+  def test_save_model_json(self):
     model = keras.Sequential()
     model.add(keras.layers.LSTM(
       units=1,
       input_shape=(1,1)
     ))
+    
     test_file_name = "tmp.json"
 
-    save_model(model, test_file_name)
+    save_model_json(model, test_file_name)
 
     with open(test_file_name) as test_file:
       saved_model_artifact = json.load(test_file)
@@ -112,9 +113,9 @@ class TestModel(unittest.TestCase):
     expected = np.array([np.array([1,2]),np.array([3,4])])
     self.assertTrue((converted == expected).all())
 
-  def test_load_model(self):
+  def test_load_model_json(self):
     model_file = Path("test/test_trained_model.json")
-    model = load_model(model_file)
+    model = load_model_json(model_file)
     self.assertTrue(isinstance(model, Sequential))
     loaded_weights = model.get_weights()
 

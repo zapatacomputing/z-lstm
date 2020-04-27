@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras.models import Sequential, model_from_json
+from tensorflow.keras.models import Sequential, model_from_json, load_model
 import numpy as np
 
 class TestModel(unittest.TestCase):
@@ -57,6 +57,72 @@ class TestModel(unittest.TestCase):
     self.assertEqual(len(old_weights), len(new_weights))
     for i in range(len(old_weights)):
       self.assertTrue((old_weights[i] != new_weights[i]).any())
+
+  def test_save_model_h5(self):
+    model = keras.Sequential()
+    model.add(keras.layers.Dense(
+      units=1,
+      input_shape=(1,1)
+    ))
+    model.compile(
+      loss='mean_squared_error',
+      optimizer=keras.optimizers.Adam(0.001)
+    )
+    
+    test_file_name = "tmp.h5"
+
+    save_model_h5(model, test_file_name)
+
+    saved_model = keras.models.load_model(test_file_name)
+
+    for i in range(len(saved_model.get_weights())):
+      self.assertTrue((saved_model.get_weights()[i] == model.get_weights()[i]).all())
+  
+    try:
+      os.remove(test_file_name)
+    except OSError:
+      pass
+
+  def test_load_model_h5(self):
+    model_file = Path("test/test_model.h5")
+    model = load_model_h5(model_file)
+    self.assertTrue(isinstance(model, Sequential))
+    loaded_weights = model.get_weights()
+
+    expected_weights = [
+      np.array(
+        [np.array(
+           [1.0]
+        ).astype('float32')]
+      ),
+      np.array(
+          [2.0]
+        ).astype('float32')
+    ]
+
+    for i in range(len(loaded_weights)):
+      self.assertTrue((loaded_weights[i] == expected_weights[i]).all())
+
+  def test_save_loss_history(self):
+    history = {'loss': [0.3, 0.2, 0.1]}
+    test_file_name = "tmp.json"
+
+    save_loss_history(history, test_file_name)
+
+    with open(test_file_name) as test_file:
+      saved_history = json.load(test_file)
+
+    history_dict = {
+      "history": history,
+      "schema": "orquestra-v1-loss-function-history"
+    }
+
+    self.assertEqual(history_dict, saved_history)
+
+    try:
+      os.remove(test_file_name)
+    except OSError:
+      pass
 
   # How to test this without just redoing code in save_model?
   def test_save_model_json(self):
@@ -137,27 +203,6 @@ class TestModel(unittest.TestCase):
 
     for i in range(len(loaded_weights)):
       self.assertTrue((loaded_weights[i] == expected_weights[i]).all())
-
-  def test_save_loss_history(self):
-    history = {'loss': [0.3, 0.2, 0.1]}
-    test_file_name = "tmp.json"
-
-    save_loss_history(history, test_file_name)
-
-    with open(test_file_name) as test_file:
-      saved_history = json.load(test_file)
-
-    history_dict = {
-      "history": history,
-      "schema": "orquestra-v1-loss-function-history"
-    }
-
-    self.assertEqual(history_dict, saved_history)
-
-    try:
-      os.remove(test_file_name)
-    except OSError:
-      pass
 
 if __name__ == '__main__':
   unittest.main()

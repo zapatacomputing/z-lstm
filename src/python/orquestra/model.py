@@ -71,11 +71,11 @@ def train_model(model: Sequential, data: dict, nepochs=30, batchsize=32, valspli
   return fithistory.history, model
 
 def save_model_h5(model: Sequential, filename: str) -> None:
-
   model.save(filename)
 
 def load_model_h5(filename: str) -> Sequential:
-  model = keras.models.load_model(filename)
+  model = keras.models.load_model(filename, compile=False)
+  return model
 
 def save_loss_history(history, filename: str) -> None:
   history_dict = {}

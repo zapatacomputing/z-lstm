@@ -5,7 +5,7 @@ This module manipulates an LSTM model.
 import json
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras.models import Sequential, model_from_json
+from tensorflow.keras.models import Sequential, model_from_json, load_model
 import pandas as pd
 import numpy as np
 

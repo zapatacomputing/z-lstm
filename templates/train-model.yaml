@@ -43,15 +43,21 @@ spec:
         raw:
           data: |
             from orquestra import *
+            print("1")
             data = load_data('training_data.json')
+            print("2")
             model = load_model_h5('model.h5')
+            print("3")
             history, model = train_model(model,
                                   data["data"],
                                   {{inputs.parameters.nepochs}},
                                   {{inputs.parameters.batchsize}},
                                   {{inputs.parameters.valsplit}})
+            print("4")
             save_loss_history(history, 'history.json')
+            print("5")
             save_model_h5(model, 'trained_model.h5')
+            print("6")
             save_model_json(model, 'trained_model.json')
 
       # This section is where output artifacts are listed. They must be listed here, or else they will get deleted when the template completes. They must be under the `app` directory in order to be saved.

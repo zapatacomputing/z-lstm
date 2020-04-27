@@ -62,7 +62,7 @@ class TestModel(unittest.TestCase):
     for i in range(len(old_weights)):
       self.assertTrue((old_weights[i] != new_weights[i]).any())
 
-  def test_test_model(self):
+  def test_predict(self):
     np.random.seed(1)
     test_data_file_path = Path("test/test_window_data.json")
     with open(test_data_file_path) as test_data_file:
@@ -78,8 +78,9 @@ class TestModel(unittest.TestCase):
       optimizer=keras.optimizers.Adam(0.001)
     )
 
-    predictions = test_model(model, test_data)
+    predictions = predict(model, test_data)
 
+    print(predictions)
     expected_predictions = {'data': [[3.3053510189056396], [3.0758495330810547], [1.956718921661377]]}
 
     self.assertTrue(isinstance(predictions, dict))

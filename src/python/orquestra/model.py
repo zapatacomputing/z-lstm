@@ -70,8 +70,17 @@ def train_model(model: Sequential, data: dict, nepochs=30, batchsize=32, valspli
 
   return fithistory.history, model
 
-def test_model(model: Sequential, data: dict):
+def predict(model: Sequential, data: dict):
   windows = np.array(data["windows"])
+
+  print(windows.shape)
+
+  if len(windows.shape) == 2:
+    # windows = windows.reshape(windows.shape + (1,))
+    windows = np.expand_dims(windows, axis=2)
+
+
+  print(windows.shape)
 
   pred = model.predict(windows)
 

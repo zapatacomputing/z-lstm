@@ -5,7 +5,7 @@ spec:
   templates:
 
   # This is the name of the template, which is used to reference it in the workflow. This field is required.
-  - name: test-model
+  - name: predict-using-model
 
     # `generic-task` is the supertemplate that all templates (that don't contain a `steps` section) must inherit from
     parent: generic-task
@@ -37,7 +37,7 @@ spec:
             from orquestra import *
             data = load_data('testing_data.json')
             model = load_model_h5('model.h5')
-            predictions = test_model(model, data["data"])
+            predictions = predict(model, data["data"])
             save_data([predictions], ['predictions.json'])
 
       # This section is where output artifacts are listed. They must be listed here, or else they will get deleted when the template completes. They must be under the `app` directory in order to be saved.

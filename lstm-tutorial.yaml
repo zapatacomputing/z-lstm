@@ -93,8 +93,8 @@ spec:
             from: '{{steps.build-model.outputs.artifacts.model}}'
           - name: training-data
             from: '{{steps.preprocess-data.outputs.artifacts.training_data_windows}}'
-    - - name: test-model
-        template: test-model
+    - - name: predict-using-model
+        template: predict-using-model
         arguments:
           parameters:
           - resources: [z-lstm]

@@ -5,7 +5,7 @@ This module manipulates an LSTM model.
 import json
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras.models import Sequential, model_from_json, load_model
+from tensorflow.keras.models import Sequential, model_from_json, load_model, save_model
 import pandas as pd
 import numpy as np
 
@@ -78,7 +78,7 @@ def test_model(model: Sequential, data: dict):
 
 def save_model_h5(model: Sequential, filename: str) -> None:
   # model.save(filename)
-  tf.keras.models.save_model(
+  keras.models.save_model(
     model, filename, include_optimizer=True
   )
 

@@ -83,7 +83,7 @@ def save_model_h5(model: Sequential, filename: str) -> None:
   )
 
 def load_model_h5(filename: str) -> Sequential:
-  model = keras.models.load_model(filename, compile=False)
+  model = keras.models.load_model(filename, compile=True)
   return model
 
 def save_loss_history(history, filename: str) -> None:

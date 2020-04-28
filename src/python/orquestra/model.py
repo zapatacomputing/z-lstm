@@ -53,11 +53,6 @@ def train_model(model: Sequential, data: dict, nepochs=30, batchsize=32, valspli
 
   if len(windows.shape) == 2:
     windows = windows.reshape(windows.shape + (1,))
-  
-  # model.compile(
-  #   loss='mean_squared_error',
-  #   optimizer=keras.optimizers.Adam(learning_rate)
-  # )
 
   fithistory = model.fit(
     windows, next_vals,
@@ -73,12 +68,8 @@ def train_model(model: Sequential, data: dict, nepochs=30, batchsize=32, valspli
 def predict(model: Sequential, data: dict):
   windows = np.array(data["windows"])
 
-  print(windows.shape)
-
   if len(windows.shape) == 2:
-    # windows = windows.reshape(windows.shape + (1,))
     windows = np.expand_dims(windows, axis=2)
-
 
   print(windows.shape)
 

@@ -1,5 +1,5 @@
 import unittest
-from data import noisy_sine_generation
+from data import *
 
 class TestDataGeneration(unittest.TestCase):
   def test_noisy_sine_generation(self):

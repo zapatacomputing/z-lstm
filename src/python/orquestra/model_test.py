@@ -35,13 +35,13 @@ class TestModel(unittest.TestCase):
       test_data = json.load(test_data_file)
 
     # Make simple model
-    model = keras.Sequential()
+    model = keras.Sequential(name='sequential_test')
     model.add(keras.layers.LSTM(
       units=2,
-      input_shape=(10, 1)
+      input_shape=(10, 1),
+      name='lstm_test'
     ))
-    model.add(keras.layers.Dropout(0.2))
-    model.add(keras.layers.Dense(units=1))
+    model.add(keras.layers.Dense(units=1, name='dropout_test'))
     model.compile(
       loss='mean_squared_error',
       optimizer=keras.optimizers.Adam(0.001)
@@ -54,8 +54,8 @@ class TestModel(unittest.TestCase):
     expected_model_file_path = Path("test/test_trained_model_specs.json")
     with open(expected_model_file_path) as expected_model_file:
       expected_model_json = expected_model_file.read()
-
     expected_model = model_from_json(expected_model_json)
+
     self.assertEqual(model.to_json(), expected_model.to_json())
 
     self.assertEqual(len(old_weights), len(new_weights))
@@ -70,9 +70,17 @@ class TestModel(unittest.TestCase):
 
     # Make simple model
     model = keras.Sequential()
-    model.add(keras.layers.Dense(units=1,
-                kernel_initializer='ones',
-                bias_initializer='zeros'))
+    model.add(keras.layers.LSTM(
+      units=2,
+      input_shape=(10, 1),
+      kernel_initializer='ones',
+      recurrent_initializer='ones',
+      bias_initializer='zeros'
+    ))
+    model.add(keras.layers.Dense(
+      units=1,
+      kernel_initializer='ones',
+      bias_initializer='zeros'))
     model.compile(
       loss='mean_squared_error',
       optimizer=keras.optimizers.Adam(0.001)
@@ -80,8 +88,7 @@ class TestModel(unittest.TestCase):
 
     predictions = predict(model, test_data)
 
-    print(predictions)
-    expected_predictions = {'data': [[3.3053510189056396], [3.0758495330810547], [1.956718921661377]]}
+    expected_predictions = {'data': [[1.4181864261627197], [1.7895604372024536], [1.6125410795211792]]}
 
     self.assertTrue(isinstance(predictions, dict))
     self.assertTrue(isinstance(predictions["data"], list))

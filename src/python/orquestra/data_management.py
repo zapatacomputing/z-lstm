@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 from typing import TextIO
 
-def save_data(datas: list, filenames: list):
+def save_data(datas: list, filenames: list) -> None:
   for i in range(len(datas)):
     data = datas[i]
     filename = filenames[i]

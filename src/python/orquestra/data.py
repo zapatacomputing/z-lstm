@@ -28,7 +28,7 @@ def noisy_sine_generation(time_range, time_step, noise_std) -> dict:
     print('Data frame header:')
     print(data_df.head())
 
-    data_dict["data"] = data_df.to_dict()
+    data_dict["data"] = data_df.to_json()
   except:
     e = sys.exc_info()[0]
     print(e)

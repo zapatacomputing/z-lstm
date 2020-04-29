@@ -32,9 +32,12 @@ class TestPreprocessData(unittest.TestCase):
     test_dict = data[1]
     train_window_dict = data[2]
     test_window_dict = data[3]
+    
+    train_df_dict = json.loads(train_dict["data"])
+    test_df_dict = json.loads(test_dict["data"])
 
-    self.assertEqual(len(train_dict["data"]["time"]), 400)
-    self.assertEqual(len(test_dict["data"]["time"]), 100)
+    self.assertEqual(len(train_df_dict["time"]), 400)
+    self.assertEqual(len(test_df_dict["time"]), 100)
     self.assertEqual(len(train_window_dict["data"]["windows"]), 390)
     self.assertEqual(len(test_window_dict["data"]["next_vals"]), 90)
 

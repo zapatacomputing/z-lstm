@@ -29,8 +29,6 @@ spec:
         value: 32
       - name: dropout
         value: 0.2
-      - name: learning_rate
-        value: 0.001
 
       # This section creates a script called `main.py` containing the code below under `data`. It must be under the `app` directory in order for the command above to locate it.
       artifacts:
@@ -44,8 +42,7 @@ spec:
             data = load_data('preprocessed_data.json')
             model = build_model(data["data"],
                                   {{inputs.parameters.hnodes}},
-                                  {{inputs.parameters.dropout}},
-                                  {{inputs.parameters.learning_rate}})
+                                  {{inputs.parameters.dropout}})
             save_model_json(model, 'model.json')
 
       # This section is where output artifacts are listed. They must be listed here, or else they will get deleted when the template completes. They must be under the `app` directory in order to be saved.

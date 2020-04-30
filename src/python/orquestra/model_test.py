@@ -88,12 +88,13 @@ class TestModel(unittest.TestCase):
 
     predictions = predict(model, test_data)
 
-    expected_predictions = {'data': [[1.4181864261627197], [1.7895604372024536], [1.6125410795211792]]}
+    expected_predictions = {'data': [[1.4181863069534302], [1.789560317993164], [1.6125410795211792]]}
 
     self.assertTrue(isinstance(predictions, dict))
     self.assertTrue(isinstance(predictions["data"], list))
     self.assertTrue(isinstance(predictions["data"][0], list))
-    self.assertDictEqual(predictions, expected_predictions)
+    for i in range(len(predictions["data"])):
+      self.assertAlmostEqual(predictions["data"][i][0], expected_predictions["data"][i][0])
 
   def test_save_model_h5(self):
     model = keras.Sequential()

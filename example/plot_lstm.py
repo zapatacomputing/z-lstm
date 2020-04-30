@@ -44,16 +44,16 @@ plt.xlabel('Epoch')
 plt.ylabel('Loss function value')
 
 # Plotting results: train, test and perdicted datasets
-fig, ax = plt.subplots()
+plt.figure()
 
-ax.plot(training_df['time'], training_df['values'], color='g')
-ax.plot(testing_df['time'], testing_df['values'], color='b')
-ax.scatter(testing_df['time'].values[10:], predicted_vals, marker='o', color='r', label="Predicted data")
+plt.plot(training_df['time'], training_df['values'], color='g', label="Training", zorder=2)
+plt.plot(testing_df['time'], testing_df['values'], color='b', label="Testing", zorder=3)
+plt.scatter(testing_df['time'].values[10:], predicted_vals, marker='o', s=15., color='r', label="Predicted", zorder=4)
 
 plt.ylabel('Value')
-plt.xlabel('Time Step')
+plt.xlabel('Time')
+plt.legend()
 plt.grid()
-ax.legend(['Training', 'Testing', 'Predicted'])
 plt.title("Training, Test and Predicted datasets")
 
 plt.show()

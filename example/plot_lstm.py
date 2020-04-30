@@ -25,6 +25,11 @@ for step in results:
     for entry in predicted_vals_obj:
       predicted_vals.append(entry['data'][0]['data'])
 
+# Converting indices to ints and sorting by indices
+training_df.index = training_df.index.astype(int)
+training_df.sort_index(inplace=True)
+testing_df.index = testing_df.index.astype(int)
+testing_df.sort_index(inplace=True)
 
 # Plotting values from training process
 plt.figure()
@@ -39,19 +44,16 @@ plt.xlabel('Epoch')
 plt.ylabel('Loss function value')
 
 # Plotting results: train, test and perdicted datasets
-plt.figure()
-# plt.plot(training_df['time'], training_df['values'], color='b')
-# plt.plot(testing_df['time'], testing_df['values'], color='r')
-# plt.scatter(training_df['time'], training_df['values'], color='b')
-# plt.scatter(testing_df['time'], testing_df['values'], color='r')
+fig, ax = plt.subplots()
 
-plt.plot(training_df['values'], color='b')
-plt.plot(testing_df['values'], color='r')
-plt.plot(np.arange(410, 500), predicted_vals, 'g', label="Predicted data")
+ax.plot(training_df['time'], training_df['values'], color='g')
+ax.plot(testing_df['time'], testing_df['values'], color='b')
+ax.scatter(testing_df['time'].values[10:], predicted_vals, marker='o', color='r', label="Predicted data")
 
 plt.ylabel('Value')
 plt.xlabel('Time Step')
-plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+plt.grid()
+ax.legend(['Training', 'Testing', 'Predicted'])
 plt.title("Training, Test and Predicted datasets")
 
 plt.show()

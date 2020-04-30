@@ -31,6 +31,8 @@ spec:
         value: 32
       - name: valsplit
         value: 0.1
+      - name: learning-rate
+        value: 0.01
 
       # This section creates a script called `main.py` containing the code below under `data`. It must be under the `app` directory in order for the command above to locate it.
       artifacts:
@@ -49,7 +51,8 @@ spec:
                                   data["data"],
                                   {{inputs.parameters.nepochs}},
                                   {{inputs.parameters.batchsize}},
-                                  {{inputs.parameters.valsplit}})
+                                  {{inputs.parameters.valsplit}},
+                                  {{inputs.parameters.learning-rate}})
             save_loss_history(history, 'history.json')
             save_model_json(model, 'trained_model.json')
 

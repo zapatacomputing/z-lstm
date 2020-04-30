@@ -9,7 +9,7 @@ from tensorflow.keras.models import Sequential, model_from_json, load_model, sav
 import pandas as pd
 import numpy as np
 
-def build_model(data, hnodes=32, dropout=0.2, learning_rate=0.001) -> dict:
+def build_model(data, hnodes=32, dropout=0.2) -> dict:
   # Load data into dataframe
   df = pd.DataFrame.from_dict(data)
   print("DataFrame head:")
@@ -39,15 +39,9 @@ def build_model(data, hnodes=32, dropout=0.2, learning_rate=0.001) -> dict:
   # Adding a Dense layer at the end
   model.add(keras.layers.Dense(units=1))
 
-  # Compile model using MSE as loss function to minimize, and Adam as optimiser
-  # model.compile(
-  #   loss='mean_squared_error',
-  #   optimizer=keras.optimizers.Adam(learning_rate)
-  # )
-
   return model
 
-def train_model(model: Sequential, data: dict, nepochs=30, batchsize=32, valsplit=0.1, learning_rate=0.001):
+def train_model(model: Sequential, data: dict, nepochs=30, batchsize=32, valsplit=0.1, learning_rate=0.01):
   windows = np.array(data["windows"])
   next_vals = np.array(data["next_vals"])
 
@@ -78,10 +72,7 @@ def predict(model: Sequential, data: dict):
 
   print(windows.shape)
   
-  model.compile(
-    loss='mean_squared_error',
-    optimizer=keras.optimizers.Adam(learning_rate)
-  )
+  # model.compile()
 
   pred = model.predict(windows)
 

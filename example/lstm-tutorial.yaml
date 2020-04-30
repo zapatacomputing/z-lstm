@@ -74,7 +74,6 @@ spec:
           - docker-tag: latest
           - hnodes: "128"
           - dropout: "0.1"
-          - learning_rate: "0.01"
           artifacts:
           - name: preprocessed-data
             from: '{{steps.preprocess-data.outputs.artifacts.testing_data_windows}}'
@@ -88,6 +87,7 @@ spec:
           - nepochs: "100"
           - batchsize: "32"
           - valsplit: "0.1"
+          - learning-rate: "0.01"
           artifacts:
           - name: model
             from: '{{steps.build-model.outputs.artifacts.model}}'
@@ -102,6 +102,6 @@ spec:
           - docker-tag: latest
           artifacts:
           - name: model
-            from: '{{steps.train-model.outputs.artifacts.trained_model_complete}}'
+            from: '{{steps.train-model.outputs.artifacts.trained_model}}'
           - name: testing-data
             from: '{{steps.preprocess-data.outputs.artifacts.testing_data_windows}}'

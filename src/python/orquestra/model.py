@@ -71,8 +71,6 @@ def predict(model: Sequential, data: dict):
     windows = np.expand_dims(windows, axis=2)
 
   print(windows.shape)
-  
-  # model.compile()
 
   pred = model.predict(windows)
 
@@ -82,7 +80,6 @@ def predict(model: Sequential, data: dict):
   return pred_dict
 
 def save_model_h5(model: Sequential, filename: str) -> None:
-  # model.save(filename)
   keras.models.save_model(
     model, filename, include_optimizer=True
   )

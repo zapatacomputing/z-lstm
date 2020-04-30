@@ -38,10 +38,10 @@ def preprocess_data(data, train_perc = 0.8, window_size = 10):
 
   # Save all 4 data sets to dictionaries
   train_dict = {}
-  train_dict["data"] = train.to_json()
+  train_dict["data"] = train.to_dict()
 
   test_dict = {}
-  test_dict["data"] = test.to_json()
+  test_dict["data"] = test.to_dict()
 
   train_window_dict = {"data":{}}
   train_window_dict["data"]["windows"] = train_windows.tolist()

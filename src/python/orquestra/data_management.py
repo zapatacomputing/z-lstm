@@ -11,6 +11,8 @@ def save_data(datas: list, filenames: list) -> None:
   for i in range(len(datas)):
     data = datas[i]
     filename = filenames[i]
+    
+    print("Saving this data:\n", data)
 
     data["schema"] = "orquestra-v1-data"
 

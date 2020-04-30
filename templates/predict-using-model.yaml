@@ -27,7 +27,7 @@ spec:
       # This section creates a script called `main.py` containing the code below under `data`. It must be under the `app` directory in order for the command above to locate it.
       artifacts:
       - name: model
-        path: /app/model.h5
+        path: /app/model.json
       - name: testing-data
         path: /app/testing_data.json
       - name: main-script
@@ -36,7 +36,7 @@ spec:
           data: |
             from orquestra import *
             data = load_data('testing_data.json')
-            model = load_model_h5('model.h5')
+            model = load_model_json('model.json')
             predictions = predict(model, data["data"])
             save_data([predictions], ['predictions.json'])
 

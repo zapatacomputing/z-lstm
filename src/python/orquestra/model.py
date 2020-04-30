@@ -40,10 +40,10 @@ def build_model(data, hnodes=32, dropout=0.2, learning_rate=0.001) -> dict:
   model.add(keras.layers.Dense(units=1))
 
   # Compile model using MSE as loss function to minimize, and Adam as optimiser
-  model.compile(
-    loss='mean_squared_error',
-    optimizer=keras.optimizers.Adam(learning_rate)
-  )
+  # model.compile(
+  #   loss='mean_squared_error',
+  #   optimizer=keras.optimizers.Adam(learning_rate)
+  # )
 
   return model
 
@@ -53,6 +53,11 @@ def train_model(model: Sequential, data: dict, nepochs=30, batchsize=32, valspli
 
   if len(windows.shape) == 2:
     windows = windows.reshape(windows.shape + (1,))
+    
+  model.compile(
+    loss='mean_squared_error',
+    optimizer=keras.optimizers.Adam(learning_rate)
+  )
 
   fithistory = model.fit(
     windows, next_vals,
@@ -72,6 +77,11 @@ def predict(model: Sequential, data: dict):
     windows = np.expand_dims(windows, axis=2)
 
   print(windows.shape)
+  
+  model.compile(
+    loss='mean_squared_error',
+    optimizer=keras.optimizers.Adam(learning_rate)
+  )
 
   pred = model.predict(windows)
 

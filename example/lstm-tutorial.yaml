@@ -52,7 +52,7 @@ spec:
           - docker-tag: latest
           - timerange: "100"
           - timestep: "0.1"
-          - noisestd: "0.2"
+          - noisestd: "0.1"
     - - name: preprocess-data
         template: preprocess-data
         arguments:
@@ -73,8 +73,8 @@ spec:
           - docker-image: z-ml
           - docker-tag: latest
           - hnodes: "128"
-          - dropout: "0.2"
-          - learning_rate: "0.001"
+          - dropout: "0.1"
+          - learning_rate: "0.01"
           artifacts:
           - name: preprocessed-data
             from: '{{steps.preprocess-data.outputs.artifacts.testing_data_windows}}'

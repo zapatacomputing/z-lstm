@@ -50,9 +50,9 @@ spec:
           - resources: [z-lstm]
           - docker-image: z-ml
           - docker-tag: latest
-          - timerange: "2"
+          - timerange: "100"
           - timestep: "0.1"
-          - noisestd: "0.4"
+          - noisestd: "0.2"
     - - name: preprocess-data
         template: preprocess-data
         arguments:
@@ -72,7 +72,7 @@ spec:
           - resources: [z-lstm]
           - docker-image: z-ml
           - docker-tag: latest
-          - hnodes: "32"
+          - hnodes: "128"
           - dropout: "0.2"
           - learning_rate: "0.001"
           artifacts:
@@ -85,7 +85,7 @@ spec:
           - resources: [z-lstm]
           - docker-image: z-ml
           - docker-tag: latest
-          - nepochs: "30"
+          - nepochs: "100"
           - batchsize: "32"
           - valsplit: "0.1"
           artifacts:

@@ -20,8 +20,8 @@ def plot(filename):
       training_loss_vals = results[step]['history']['history']['loss']
       validation_loss_vals = results[step]['history']['history']['val_loss']
     if results[step]['class'] == 'preprocess-data':
-      training_df = pd.DataFrame(results[step]['training_data']['data'])
-      testing_df = pd.DataFrame(results[step]['testing_data']['data'])
+      training_df = pd.DataFrame(results[step]['training-data']['data'])
+      testing_df = pd.DataFrame(results[step]['testing-data']['data'])
     if results[step]['class'] == 'predict-using-model':
       predicted_vals_obj = results[step]['predictions']['data']
       for entry in predicted_vals_obj:

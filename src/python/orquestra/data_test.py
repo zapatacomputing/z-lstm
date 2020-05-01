@@ -6,20 +6,22 @@ import pandas as pd
 from pathlib import Path
 import os.path
 
-class TestDataGeneration(unittest.TestCase):
+class TestData(unittest.TestCase):
   def test_noisy_sine_generation(self):
-    time_range = 2
+    time_range = 10
     time_step = 0.1
     noise_std = 0.5
+    
     data_dict = noisy_sine_generation(time_range, time_step, noise_std)
     
-    self.assertEqual(len(data_dict["data"]["time"]), time_range/time_step)
-    self.assertEqual(len(data_dict["data"]["values"]), time_range/time_step)
+    # The number of data points should be within 1 of the range divided by the step
+    self.assertAlmostEqual(len(data_dict["data"]["time"]), time_range/time_step, delta=1)
+    self.assertAlmostEqual(len(data_dict["data"]["values"]), time_range/time_step, delta=1)
+    # The last time value should be within one step of the end of the range
     last_index = list(data_dict["data"]["time"].keys())[-1]
-    self.assertAlmostEqual(data_dict["data"]["time"][last_index], time_range-time_step)
+    self.assertAlmostEqual(data_dict["data"]["time"][last_index], time_range-time_step, delta=time_step)
 
   def test_preprocess_data(self):
-    
     train_perc = 0.8
     window_size = 10
 
@@ -27,16 +29,29 @@ class TestDataGeneration(unittest.TestCase):
     with open(test_file_path) as test_file:
       test_data = json.load(test_file)
 
+    data_length = len(test_data["time"])
+
     data = preprocess_data(test_data, train_perc, window_size)
     train_dict = data[0]
     test_dict = data[1]
     train_window_dict = data[2]
     test_window_dict = data[3]
 
-    self.assertEqual(len(train_dict["data"]["time"]), 400)
-    self.assertEqual(len(test_dict["data"]["time"]), 100)
-    self.assertEqual(len(train_window_dict["data"]["windows"]), 390)
-    self.assertEqual(len(test_window_dict["data"]["next_vals"]), 90)
+    # The length of the training data should be equal to fraction train_perc of
+    # the total data set, rounded down
+    self.assertEqual(len(train_dict["data"]["time"]),
+      int(data_length * train_perc))
+    # The length of the testing data should be equal to the remainder of the above
+    self.assertEqual(len(test_dict["data"]["time"]),
+      data_length - int(data_length * train_perc))
+    # The length of the training data in window format should be the length of the
+    # training data minus the window size
+    self.assertEqual(len(train_window_dict["data"]["windows"]),
+      int(data_length * train_perc) - window_size)
+    # The length of the testing data in window format should be the length of the
+    # testing data minus the window size
+    self.assertEqual(len(test_window_dict["data"]["next_vals"]),
+      data_length - int(data_length * train_perc) - window_size)
     
   def test_create_dataset(self):
     x = [1,2,3,4]
@@ -63,6 +78,7 @@ class TestDataGeneration(unittest.TestCase):
         }
       }
     }
+    # The saved artifact should be the same but have a schema field
     expected_artifact_1 = data_1
     expected_artifact_1["schema"] = "orquestra-v1-data"
 
@@ -78,6 +94,7 @@ class TestDataGeneration(unittest.TestCase):
         }
       }
     }
+    # The saved artifact should be the same but have a schema field
     expected_artifact_2 = data_2
     expected_artifact_2["schema"] = "orquestra-v1-data"
 

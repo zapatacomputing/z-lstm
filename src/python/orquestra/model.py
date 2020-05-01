@@ -18,6 +18,7 @@ def build_model(data, hnodes=32, dropout=0.2) -> dict:
   # Add a '1' as the third dimension of the DataFrame shape if it's not there
   if len(df.shape) != 3:
     df = np.expand_dims(df, axis=2)
+  print("Shape of input data: ", df.shape)
 
   print("DataFrame shape:")
   print(df.shape)
@@ -33,7 +34,7 @@ def build_model(data, hnodes=32, dropout=0.2) -> dict:
     input_shape=(window_size, df.shape[2])
   ))
   
-  # Adding Dropuut
+  # Adding Dropout
   model.add(keras.layers.Dropout(dropout))
   
   # Adding a Dense layer at the end
@@ -45,8 +46,10 @@ def train_model(model: Sequential, data: dict, nepochs=30, batchsize=32, valspli
   windows = np.array(data["windows"])
   next_vals = np.array(data["next_vals"])
 
+  # Add a '1' as the third dimension of the data shape if it's not there
   if len(windows.shape) == 2:
-    windows = windows.reshape(windows.shape + (1,))
+    windows = np.expand_dims(windows, axis=2)
+  print("Shape of input windows: ", windows.shape)
     
   model.compile(
     loss='mean_squared_error',
@@ -67,33 +70,18 @@ def train_model(model: Sequential, data: dict, nepochs=30, batchsize=32, valspli
 def predict(model: Sequential, data: dict):
   windows = np.array(data["windows"])
 
+  # Add a '1' as the third dimension of the data shape if it's not there
   if len(windows.shape) == 2:
     windows = np.expand_dims(windows, axis=2)
-
-  print(windows.shape)
+  print("Shape of input windows: ", windows.shape)
 
   pred = model.predict(windows)
 
+  # Save predictions to a JSON serializable format (a dict of a list)
   pred_dict = {}
   pred_dict["data"] = pred.tolist()
 
   return pred_dict
-
-def save_model_h5(model: Sequential, filename: str) -> None:
-  keras.models.save_model(
-    model, filename, include_optimizer=True
-  )
-
-def load_model_h5(filename: str) -> Sequential:
-  model = keras.models.load_model(filename, compile=True)
-  return model
-
-def save_loss_history(history, filename: str) -> None:
-  history_dict = {}
-  history_dict["history"] = history
-  history_dict["schema"] = "orquestra-v1-loss-function-history"
-  with open(filename, "w") as f:
-    f.write(json.dumps(history_dict, indent=2))
 
 def save_model_json(model: Sequential, filename: str) -> None:
   model_dict = {"model":{}}
@@ -102,6 +90,7 @@ def save_model_json(model: Sequential, filename: str) -> None:
   model_dict["model"]["specs"] = json.loads(model_json)
 
   weights = model.get_weights()
+  # Convert weight arrays to lists because those are JSON compatible
   weights = nested_arrays_to_lists(weights)
   model_dict["model"]["weights"] = weights
 
@@ -110,6 +99,25 @@ def save_model_json(model: Sequential, filename: str) -> None:
   with open(filename, "w") as f:
     f.write(json.dumps(model_dict, indent=2))
 
+def load_model_json(filename: str) -> Sequential:
+  # load json and create model
+  with open(filename) as json_file:
+    loaded_model_artifact = json.load(json_file)
+
+  loaded_model = json.dumps(loaded_model_artifact["model"]["specs"])
+  loaded_model = model_from_json(loaded_model)
+  
+  weights = loaded_model_artifact["model"]["weights"]
+  # Everything below the top-level list needs to be converted to a numpy array
+  # because those are the types expected by `set_weights`
+  for i in range(len(weights)):
+    weights[i] = nested_lists_to_arrays(weights[i])
+  loaded_model.set_weights(weights)
+
+  return loaded_model
+
+# Helper function for saving models in JSON format
+# Lists are JSON compatible
 def nested_arrays_to_lists(obj):
   if isinstance(obj, np.ndarray):
     obj = obj.tolist()
@@ -122,6 +130,8 @@ def nested_arrays_to_lists(obj):
 
   return obj
 
+# Helper function for loading models in JSON format
+# Numpy arrays are the expected type to set the weights of a Keras model
 def nested_lists_to_arrays(obj):
   if isinstance(obj, list):
     obj = np.array(obj)
@@ -134,19 +144,22 @@ def nested_lists_to_arrays(obj):
 
   return obj
 
-def load_model_json(filename: str) -> Sequential:
-  # load json and create model
-  with open(filename) as json_file:
-    loaded_model_artifact = json.load(json_file)
+# H5 files can be used to pass models between tasks but cannot be returned in a
+# workflowresult
+def save_model_h5(model: Sequential, filename: str) -> None:
+  keras.models.save_model(
+    model, filename, include_optimizer=True
+  )
 
-  loaded_model = json.dumps(loaded_model_artifact["model"]["specs"])
+# H5 files can be used to pass models between tasks but cannot be returned in a
+# workflowresult
+def load_model_h5(filename: str) -> Sequential:
+  model = keras.models.load_model(filename, compile=True)
+  return model
 
-  loaded_model = model_from_json(loaded_model)
-  
-  weights = loaded_model_artifact["model"]["weights"]
-  # Everything below the top-level list needs to be converted to a numpy array
-  for i in range(len(weights)):
-    weights[i] = nested_lists_to_arrays(weights[i])
-  loaded_model.set_weights(weights)
-
-  return loaded_model
+def save_loss_history(history, filename: str) -> None:
+  history_dict = {}
+  history_dict["history"] = history
+  history_dict["schema"] = "orquestra-v1-loss-function-history"
+  with open(filename, "w") as f:
+    f.write(json.dumps(history_dict, indent=2))

@@ -50,9 +50,9 @@ spec:
           - resources: [z-lstm]
           - docker-image: z-ml
           - docker-tag: latest
-          - timerange: "100"
-          - timestep: "0.1"
-          - noisestd: "0.1"
+          - time-range: "100"
+          - time-step: "0.1"
+          - noise-std: "0.1"
     - - name: preprocess-data
         template: preprocess-data
         arguments:
@@ -60,8 +60,8 @@ spec:
           - resources: [z-lstm]
           - docker-image: z-ml
           - docker-tag: latest
-          - train_perc: "0.8"
-          - window_size: "10"
+          - train-perc: "0.8"
+          - window-size: "10"
           artifacts:
           - name: data
             from: '{{steps.generate-data.outputs.artifacts.data}}'
@@ -76,7 +76,7 @@ spec:
           - dropout: "0.1"
           artifacts:
           - name: preprocessed-data
-            from: '{{steps.preprocess-data.outputs.artifacts.testing_data_windows}}'
+            from: '{{steps.preprocess-data.outputs.artifacts.testing-data-windows}}'
     - - name: train-model
         template: train-model
         arguments:
@@ -85,14 +85,14 @@ spec:
           - docker-image: z-ml
           - docker-tag: latest
           - nepochs: "100"
-          - batchsize: "32"
-          - valsplit: "0.1"
+          - batch-size: "32"
+          - val-split: "0.1"
           - learning-rate: "0.01"
           artifacts:
           - name: model
             from: '{{steps.build-model.outputs.artifacts.model}}'
           - name: training-data
-            from: '{{steps.preprocess-data.outputs.artifacts.training_data_windows}}'
+            from: '{{steps.preprocess-data.outputs.artifacts.training-data-windows}}'
     - - name: predict-using-model
         template: predict-using-model
         arguments:
@@ -102,6 +102,6 @@ spec:
           - docker-tag: latest
           artifacts:
           - name: model
-            from: '{{steps.train-model.outputs.artifacts.trained_model}}'
+            from: '{{steps.train-model.outputs.artifacts.trained-model}}'
           - name: testing-data
-            from: '{{steps.preprocess-data.outputs.artifacts.testing_data_windows}}'
+            from: '{{steps.preprocess-data.outputs.artifacts.testing-data-windows}}'

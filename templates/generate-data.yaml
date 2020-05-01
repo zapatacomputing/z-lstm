@@ -25,12 +25,12 @@ spec:
         value: python3 main.py
 
       # The `numsamples` parameter allows you to change the number of samples created in your workflow
-      - name: timerange
+      - name: time-range
         # This value acts as a default but can be overridden in the workflow
         value: 100
-      - name: timestep
+      - name: time-step
         value: 0.1
-      - name: noisestd
+      - name: noise-std
         value: 0.2
 
       # This section creates a script called `main.py` containing the code below under `data`. It must be under the `app` directory in order for the command above to locate it.
@@ -40,9 +40,9 @@ spec:
         raw:
           data: |
             from orquestra import *
-            data = noisy_sine_generation({{inputs.parameters.timerange}},
-                                  {{inputs.parameters.timestep}},
-                                  {{inputs.parameters.noisestd}})
+            data = noisy_sine_generation({{inputs.parameters.time-range}},
+                                  {{inputs.parameters.time-step}},
+                                  {{inputs.parameters.noise-std}})
             save_data([data], ['data.json'])
 
       # This section is where output artifacts are listed. They must be listed here, or else they will get deleted when the template completes. They must be under the `app` directory in order to be saved.

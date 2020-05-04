@@ -1,4 +1,4 @@
-from model import *
+from .model import *
 import unittest
 import json
 import os
@@ -19,7 +19,8 @@ class TestModel(unittest.TestCase):
     model = build_model(test_data)
 
     # Get expected model out of file
-    expected_model_file_path = Path("test/test_untrained_model_specs.json")
+    cd = os.path.dirname(os.path.realpath(__file__))
+    expected_model_file_path = Path(cd + "/test/test_untrained_model_specs.json")
     with open(expected_model_file_path) as expected_model_file:
       expected_model_json = expected_model_file.read()
 
@@ -57,7 +58,8 @@ class TestModel(unittest.TestCase):
       learning_rate=0.001)
     new_weights = model.get_weights()
     
-    expected_model_file_path = Path("test/test_trained_model_specs.json")
+    cd = os.path.dirname(os.path.realpath(__file__))
+    expected_model_file_path = Path(cd + "/test/test_trained_model_specs.json")
     with open(expected_model_file_path) as expected_model_file:
       expected_model_json = expected_model_file.read()
 
@@ -134,7 +136,8 @@ class TestModel(unittest.TestCase):
       pass
 
   def test_load_model_json(self):
-    model_file = Path("test/test_model.json")
+    cd = os.path.dirname(os.path.realpath(__file__))
+    model_file = Path(cd + "/test/test_model.json")
     model = load_model_json(model_file)
     self.assertTrue(isinstance(model, Sequential))
     loaded_weights = model.get_weights()
@@ -214,7 +217,8 @@ class TestModel(unittest.TestCase):
       pass
 
   def test_load_model_h5(self):
-    model_file = Path("test/test_model.h5")
+    cd = os.path.dirname(os.path.realpath(__file__))
+    model_file = Path(cd + "/test/test_model.h5")
     model = load_model_h5(model_file)
     self.assertTrue(isinstance(model, Sequential))
     loaded_weights = model.get_weights()

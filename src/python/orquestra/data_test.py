@@ -1,5 +1,5 @@
 import unittest
-from data import *
+from .data import *
 import json
 import numpy as np
 import pandas as pd
@@ -25,7 +25,8 @@ class TestData(unittest.TestCase):
     train_perc = 0.8
     window_size = 10
 
-    test_file_path = Path("test/test_data.json")
+    cd = os.path.dirname(os.path.realpath(__file__))
+    test_file_path = Path(cd + "/test/test_data.json")
     with open(test_file_path) as test_file:
       test_data = json.load(test_file)
 
@@ -132,7 +133,8 @@ class TestData(unittest.TestCase):
       "schema": "orquestra-v1-data"
     }
 
-    data = load_data("test/test_data_artifact.json")
+    cd = os.path.dirname(os.path.realpath(__file__))
+    data = load_data(cd + "/test/test_data_artifact.json")
 
     self.assertDictEqual(data, expected_data)
 

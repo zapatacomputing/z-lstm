@@ -10,7 +10,7 @@ setuptools.setup(
     version                         = "0.1.0",
     author                          = "Zapata Computing, Inc.",
     author_email                    = "info@zapatacomputing.com",
-    description                     = "QAOA implementation for Orquestra.",
+    description                     = "Prediction with LSTM for Orquestra.",
     long_description                = long_description,
     long_description_content_type   = "text/markdown",
     url                             = "https://github.com/zapatacomputing/z-lstm",

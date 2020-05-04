@@ -1,4 +1,7 @@
-"""Plot the energy vs the number of layers in the QAOA ansatz."""
+"""
+Plot the loss function values and predictions from the results of the
+`lstm-tutorial.yaml` workflow.
+"""
 
 import sys
 import json

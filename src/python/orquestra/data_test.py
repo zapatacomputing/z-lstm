@@ -22,7 +22,7 @@ class TestData(unittest.TestCase):
     self.assertAlmostEqual(data_dict["data"]["time"][last_index], time_range-time_step, delta=time_step)
 
   def test_preprocess_data(self):
-    train_perc = 0.8
+    train_frac = 0.8
     window_size = 10
 
     cd = os.path.dirname(os.path.realpath(__file__))
@@ -32,27 +32,27 @@ class TestData(unittest.TestCase):
 
     data_length = len(test_data["time"])
 
-    data = preprocess_data(test_data, train_perc, window_size)
+    data = preprocess_data(test_data, train_frac, window_size)
     train_dict = data[0]
     test_dict = data[1]
     train_window_dict = data[2]
     test_window_dict = data[3]
 
-    # The length of the training data should be equal to fraction train_perc of
+    # The length of the training data should be equal to fraction train_frac of
     # the total data set, rounded down
     self.assertEqual(len(train_dict["data"]["time"]),
-      int(data_length * train_perc))
+      int(data_length * train_frac))
     # The length of the testing data should be equal to the remainder of the above
     self.assertEqual(len(test_dict["data"]["time"]),
-      data_length - int(data_length * train_perc))
+      data_length - int(data_length * train_frac))
     # The length of the training data in window format should be the length of the
     # training data minus the window size
     self.assertEqual(len(train_window_dict["data"]["windows"]),
-      int(data_length * train_perc) - window_size)
+      int(data_length * train_frac) - window_size)
     # The length of the testing data in window format should be the length of the
     # testing data minus the window size
     self.assertEqual(len(test_window_dict["data"]["next_vals"]),
-      data_length - int(data_length * train_perc) - window_size)
+      data_length - int(data_length * train_frac) - window_size)
     
   def test_create_dataset(self):
     x = [1,2,3,4]

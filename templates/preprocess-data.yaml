@@ -24,7 +24,7 @@ spec:
       - name: command
         value: python3 main.py
 
-      - name: train-perc
+      - name: train-frac
         # This value acts as a default but can be overridden in the workflow
         value: 0.8
       - name: window-size
@@ -41,7 +41,7 @@ spec:
             from orquestra import *
             data = load_data('data.json')
             preprocessed_data = preprocess_data(data["data"],
-                                  {{inputs.parameters.train-perc}},
+                                  {{inputs.parameters.train-frac}},
                                   {{inputs.parameters.window-size}})
             filenames = ['training_data.json',
                         'testing_data.json',

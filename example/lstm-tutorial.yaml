@@ -60,7 +60,7 @@ spec:
           - resources: [z-lstm]
           - docker-image: z-ml
           - docker-tag: latest
-          - train-perc: "0.8"
+          - train-frac: "0.8"
           - window-size: "10"
           artifacts:
           - name: data

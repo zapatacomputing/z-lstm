@@ -14,8 +14,8 @@ setuptools.setup(
     long_description                = long_description,
     long_description_content_type   = "text/markdown",
     url                             = "https://github.com/zapatacomputing/z-lstm",
-    packages                        = setuptools.find_packages(where = "python"),
-    # packages=setuptools.find_namespace_packages(include=['orquestra.*']),
+    # packages                        = setuptools.find_packages(where = "python"),
+    packages                        = setuptools.find_namespace_packages(include=['zml.*']),
     package_dir                     = {"" : "python"},
     classifiers                     = (
         "Programming Language :: Python :: 3",

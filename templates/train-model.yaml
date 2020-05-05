@@ -44,7 +44,7 @@ spec:
         path: /app/main.py
         raw:
           data: |
-            from orquestra import *
+            from zml import *
             data = load_data('training_data.json')
             model = load_model_json('model.json')
             history, model = train_model(model,

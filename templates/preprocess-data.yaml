@@ -38,7 +38,7 @@ spec:
         path: /app/main.py
         raw:
           data: |
-            from orquestra import *
+            from zml import *
             data = load_data('data.json')
             preprocessed_data = preprocess_data(data["data"],
                                   {{inputs.parameters.train-frac}},

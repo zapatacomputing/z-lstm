@@ -38,7 +38,7 @@ spec:
         path: /app/main.py
         raw:
           data: |
-            from orquestra import *
+            from zml import *
             data = load_data('preprocessed_data.json')
             model = build_model(data["data"],
                                   {{inputs.parameters.hnodes}},

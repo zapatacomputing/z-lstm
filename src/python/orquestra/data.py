@@ -8,7 +8,7 @@ import pandas as pd
 import json
 from typing import TextIO
 
-def noisy_sine_generation(time_range: float, time_step: float, noise_std: float) -> dict:
+def noisy_sine_generation(time_range:float, time_step:float, noise_std:float) -> dict:
   """
   Generates noisy sine data.
 
@@ -58,7 +58,7 @@ def noisy_sine_generation(time_range: float, time_step: float, noise_std: float)
 
   return data_dict
 
-def preprocess_data(data: dict, train_frac = 0.8: float, window_size = 10: int) -> dict, dict, dict, dict:
+def preprocess_data(data:dict, train_frac:float=0.8, window_size:int=10) -> (dict, dict, dict, dict):
   """
   Preprocesses data into a format suitable for training a model, splits it 
   into training and testing sets, and creates datasets of lookback windows and 
@@ -137,7 +137,7 @@ def preprocess_data(data: dict, train_frac = 0.8: float, window_size = 10: int) 
 
   return train_dict, test_dict, train_window_dict, test_window_dict
 
-def create_dataset(x: pd.Series, y: pd.Series, window_size=1: int) -> numpy.ndarray, numpy.ndarray:
+def create_dataset(x: pd.Series, y: pd.Series, window_size:int=1) -> (np.ndarray, np.ndarray):
   """
   A helper function of `preprocess_data` to split data into lookback windows 
   and next values.
@@ -167,7 +167,7 @@ def create_dataset(x: pd.Series, y: pd.Series, window_size=1: int) -> numpy.ndar
 
   return np.array(xs), np.array(ys)
 
-def save_data(datas: list, filenames: list) -> None:
+def save_data(datas:list, filenames:list) -> None:
   """
   Saves data as JSON.
 
@@ -188,7 +188,7 @@ def save_data(datas: list, filenames: list) -> None:
     with open(filename,'w') as f:
       f.write(json.dumps(data, indent=2)) # Write data to file as this will serve as output artifact
 
-def load_data(file: TextIO) -> dict:
+def load_data(file:TextIO) -> dict:
   """
   Loads data from JSON.
 

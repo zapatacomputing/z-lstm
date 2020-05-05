@@ -5,11 +5,12 @@ This module manipulates an LSTM model.
 import json
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras.models import Sequential, History, model_from_json, load_model, save_model
+from tensorflow.keras.models import Sequential, model_from_json, load_model, save_model
+from tensorflow.keras import callbacks
 import pandas as pd
 import numpy as np
 
-def build_model(data: dict, hnodes=32: int, dropout=0.2: float) -> Sequential:
+def build_model(data:dict, hnodes:int=32, dropout:float=0.2) -> Sequential:
   """
     Builds LSTM model with an LSTM layer, dropout layer, and dense layer.
 
@@ -71,7 +72,7 @@ def build_model(data: dict, hnodes=32: int, dropout=0.2: float) -> Sequential:
 
   return model
 
-def train_model(model: Sequential, data: dict, nepochs=30: int, batchsize=32: int, valsplit=0.1: float, learning_rate=0.01: float) -> History.history, Sequential:
+def train_model(model:Sequential, data:dict, nepochs:int=30, batchsize:int=32, valsplit:float=0.1, learning_rate:float=0.01) -> (callbacks, Sequential):
   """
   Trains input model using input data.
 
@@ -122,7 +123,7 @@ def train_model(model: Sequential, data: dict, nepochs=30: int, batchsize=32: in
 
   return fithistory.history, model
 
-def predict(model: Sequential, data: dict) -> dict:
+def predict(model:Sequential, data:dict) -> dict:
   """
   Makes predictions about input data using input model.
 
@@ -154,7 +155,7 @@ def predict(model: Sequential, data: dict) -> dict:
 
   return pred_dict
 
-def save_model_json(model: Sequential, filename: str) -> None:
+def save_model_json(model:Sequential, filename:str) -> None:
   """
   Saves a model's architecture and weights as a JSON file. The output JSON will 
   contain a "model" field with "specs" and "weights" fields inside it. The 
@@ -184,7 +185,7 @@ def save_model_json(model: Sequential, filename: str) -> None:
   with open(filename, "w") as f:
     f.write(json.dumps(model_dict, indent=2))
 
-def load_model_json(filename: str) -> Sequential:
+def load_model_json(filename:str) -> Sequential:
   """
   Loads a keras model from a JSON file.
 
@@ -251,7 +252,7 @@ def nested_lists_to_arrays(obj):
 
   return obj
 
-def save_model_h5(model: Sequential, filename: str) -> None:
+def save_model_h5(model:Sequential, filename:str) -> None:
   """
   Saves a complete model as an H5 file. H5 files can be used to pass models 
   between tasks but cannot be returned in a workflowresult.
@@ -267,7 +268,7 @@ def save_model_h5(model: Sequential, filename: str) -> None:
     model, filename, include_optimizer=True
   )
 
-def load_model_h5(filename: str) -> Sequential:
+def load_model_h5(filename:str) -> Sequential:
   """
   Loads a keras model from an H5 file. H5 files can be used to pass models 
   between tasks but cannot be returned in a workflowresult.
@@ -285,7 +286,7 @@ def load_model_h5(filename: str) -> Sequential:
   model = keras.models.load_model(filename, compile=True)
   return model
 
-def save_loss_history(history, filename: str) -> None:
+def save_loss_history(history, filename:str) -> None:
   """
   Saves a keras.History.history object to a JSON file.
 

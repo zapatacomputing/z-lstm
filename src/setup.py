@@ -1,5 +1,5 @@
-import setuptools
 import os
+import setuptools
 
 readme_path = os.path.join("..", "README.md")
 with open(readme_path, "r") as f:
@@ -14,8 +14,7 @@ setuptools.setup(
     long_description                = long_description,
     long_description_content_type   = "text/markdown",
     url                             = "https://github.com/zapatacomputing/z-lstm",
-    # packages                        = setuptools.find_packages(where = "python"),
-    packages                        = setuptools.find_namespace_packages(include=['zml.*']),
+    packages                        = setuptools.find_packages(where = "python"),
     package_dir                     = {"" : "python"},
     classifiers                     = (
         "Programming Language :: Python :: 3",

@@ -1,10 +1,10 @@
+import json
 import unittest
 import os.path
-import json
 import numpy as np
 import pandas as pd
 
-from .data import *
+from .data_manipulator import *
 from pathlib import Path
 
 

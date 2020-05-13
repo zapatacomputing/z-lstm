@@ -38,7 +38,9 @@ spec:
         path: /app/main.py
         raw:
           data: |
-            from zml import *
+            from data_manipulator impot load_data
+            from lstm_model import build_model, save_model_json
+            
             data = load_data('preprocessed_data.json')
             model = build_model(data["data"],
                                   {{inputs.parameters.hnodes}},

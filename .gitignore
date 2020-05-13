@@ -128,8 +128,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
-# Custom
-sandbox_cachedir/
-cachedir
-results

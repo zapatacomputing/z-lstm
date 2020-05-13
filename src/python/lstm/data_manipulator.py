@@ -222,6 +222,6 @@ def load_data(filename:TextIO) -> dict:
             print(f'Error: Could not open {filename}')
 
     else:
-        data = json.load(file)
+        data = json.load(filename)
 
     return data

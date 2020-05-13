@@ -1,9 +1,12 @@
-.PHONY: all install test
+.PHONY: all install test lint
 
-all: install test
+all: install lint test
 
 install:
 	pip install -r requirements.txt
+
+lint:
+	pylint */*py
 
 test:
 	pytest

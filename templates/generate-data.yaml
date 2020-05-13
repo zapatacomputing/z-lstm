@@ -39,7 +39,8 @@ spec:
         path: /app/main.py
         raw:
           data: |
-            from zml import *
+            from data_manipulator import noisy_sine_generation, save_data
+            
             data = noisy_sine_generation({{inputs.parameters.time-range}},
                                   {{inputs.parameters.time-step}},
                                   {{inputs.parameters.noise-std}})

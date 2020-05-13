@@ -1,10 +1,10 @@
-import unittest
-import json
 import os
+import json
+import unittest
 import numpy as np
 import tensorflow as tf
 
-from .model import *
+from .lstm_model import *
 from pathlib import Path
 from tensorflow import keras
 from tensorflow.keras.models import Sequential, model_from_json, load_model

@@ -1,15 +1,15 @@
 """
-This module manipulates an LSTM model.
+This builds a LSTM model.
 """
 
 import json
+import pandas as pd
+import numpy as np
 
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.models import Sequential, model_from_json, load_model, save_model
 from tensorflow.keras import callbacks
-import pandas as pd
-import numpy as np
 
 
 def build_model(data:dict, hnodes:int=32, dropout:float=0.2) -> Sequential:

@@ -34,7 +34,9 @@ spec:
         path: /app/main.py
         raw:
           data: |
-            from zml import *
+            from data_manipulator import load_data, save_data
+            from lstm_model import load_model_json, predict
+
             data = load_data('testing_data.json')
             model = load_model_json('model.json')
             predictions = predict(model, data["data"])

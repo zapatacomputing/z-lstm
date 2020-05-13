@@ -39,7 +39,7 @@ spec:
         path: /app/main.py
         raw:
           data: |
-            from data_manipulator import noisy_sine_generation, save_data
+            from lstm.data_manipulator import noisy_sine_generation, save_data
             
             data = noisy_sine_generation({{inputs.parameters.time-range}},
                                   {{inputs.parameters.time-step}},

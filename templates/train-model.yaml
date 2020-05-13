@@ -44,8 +44,8 @@ spec:
         path: /app/main.py
         raw:
           data: |
-            from data_manipulator import load_data
-            from lstm_model import load_model_json, train_model, save_loss_history, save_model_json
+            from lstm.data_manipulator import load_data
+            from lstm.lstm_model import load_model_json, train_model, save_loss_history, save_model_json
             
             data = load_data('training_data.json')
             model = load_model_json('model.json')

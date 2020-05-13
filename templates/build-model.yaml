@@ -38,8 +38,8 @@ spec:
         path: /app/main.py
         raw:
           data: |
-            from data_manipulator impot load_data
-            from lstm_model import build_model, save_model_json
+            from lstm.data_manipulator impot load_data
+            from lstm.lstm_model import build_model, save_model_json
             
             data = load_data('preprocessed_data.json')
             model = build_model(data["data"],

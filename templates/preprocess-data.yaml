@@ -38,7 +38,7 @@ spec:
         path: /app/main.py
         raw:
           data: |
-            from data_manipulator import load_data, save_data, preprocess_data
+            from lstm.data_manipulator import load_data, save_data, preprocess_data
 
             data = load_data('data.json')
             preprocessed_data = preprocess_data(data["data"],

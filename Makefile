@@ -3,7 +3,7 @@
 all: install lint test
 
 install:
-	pip install -r requirements.txt
+	pip install -r requirements_dev.txt
 
 lint:
 	pylint */*py

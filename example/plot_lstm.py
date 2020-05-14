@@ -10,8 +10,11 @@ from matplotlib import pyplot as plt
 
 def plot(filename):
     # Insert the path to your JSON file here
-    with open(filename) as f:
-        results = json.load(f)
+    try:
+        with open(filename) as f:
+            results = json.load(f)
+    except IOError:
+        print(f'Error: {filename} not found.')
 
     training_loss_vals = []
     validation_loss_vals = []
@@ -64,5 +67,10 @@ def plot(filename):
 
 
 if __name__ == '__main__':
-    filename = sys.argv[1]
+    try:
+        filename = sys.argv[1]
+    except IndexError:
+        print(f'Error: please pass the JSON result file to be plotted.')
+        sys.exit(1)
+
     plot(filename)

@@ -1,3 +1,7 @@
+"""
+Copyright Zapata Computing, Inc. All rights reserved.
+"""
+
 import os
 import json
 import unittest

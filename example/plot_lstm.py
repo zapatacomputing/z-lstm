@@ -1,4 +1,6 @@
 """
+Copyright Zapata Computing, Inc. All rights reserved.
+
 Plot the loss function values and predictions from the results of the
 `lstm-tutorial.yaml` workflow.
 """

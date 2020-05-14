@@ -1,4 +1,6 @@
 """
+Copyright Zapata Computing, Inc. All rights reserved.
+
 This builds a LSTM model.
 """
 

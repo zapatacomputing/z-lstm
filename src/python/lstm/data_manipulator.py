@@ -1,4 +1,6 @@
 """
+Copyright Zapata Computing, Inc. All rights reserved.
+
 This module manipulates data.
 """
 

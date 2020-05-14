@@ -12,7 +12,7 @@ resources:
   type: git
   parameters:
     url: "git@github.com:zapatacomputing/z-lstm.git"
-    branch: "172419733-lstm-tutorial-workflow"
+    branch: "master"
 
 # Data to help you easily work with your workflow
 metadata:

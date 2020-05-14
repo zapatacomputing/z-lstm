@@ -245,11 +245,11 @@ def nested_arrays_to_lists(obj):
     try:
         for i in range(len(obj)):
             obj[i] = nested_arrays_to_lists(obj[i])
+
     except TypeError:
         return obj
 
     return obj
-
 
 def nested_lists_to_arrays(obj):
     """

@@ -65,7 +65,7 @@ make install
 
 ### Running tests
 
-Tests are located in `src/lstm/test`. Run them with:
+Tests are located in `src/python/lstm/test`. Run them with:
 
 ```
 make test

@@ -9,7 +9,7 @@ Example workflows can be found inside `example/`.
 To submit a workflow to Orquestra, first login:
 
 ```
-qe login -e steinkirch@zapatacomputing.com -s http://prod-b.orquestra.io
+qe login -e <email> -s <server>
 ```
 
 Then submit with:

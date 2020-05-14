@@ -1,6 +1,6 @@
 # z-lstm
 
-This repository contain the source code and workflow templates to run [Prediction with LSTM](http://orquestra.io/docs/tutorial/lstm/) in Orquestra.
+This repository contains the source code and workflow templates to run [Prediction with LSTM](http://orquestra.io/docs/tutorial/lstm/) in Orquestra.
 
 Example workflows can be found inside `example/`.
 
@@ -9,7 +9,7 @@ Example workflows can be found inside `example/`.
 To submit a workflow to Orquestra, first login:
 
 ```
-qe login -e steinkirch@zapatacomputing.com -s http://prod-b.orquestra.io
+qe login -e <email> -s <server>
 ```
 
 Then submit with:
@@ -57,7 +57,7 @@ virtualenv venv
 source venv/bin/activate
 ```
 
-Install depedencies:
+Install dependencies:
 
 ```
 make install

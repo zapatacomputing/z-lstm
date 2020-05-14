@@ -7315,7 +7315,7 @@
     "inputParam:docker-registry": "zapatacomputing",
     "inputParam:docker-tag": "latest",
     "inputParam:memory": "1024Mi",
-    "inputParam:train_perc": "0.8",
+    "inputParam:train_frac": "0.8",
     "inputParam:window_size": "10",
     "testing_data": {
       "data": {

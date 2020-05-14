@@ -24,10 +24,10 @@ spec:
       - name: command
         value: python3 main.py
 
-      - name: train_perc
+      - name: train-frac
         # This value acts as a default but can be overridden in the workflow
         value: 0.8
-      - name: window_size
+      - name: window-size
         value: 10
 
       # This section creates a script called `main.py` containing the code below under `data`. It must be under the `app` directory in order for the command above to locate it.
@@ -38,11 +38,12 @@ spec:
         path: /app/main.py
         raw:
           data: |
-            from orquestra import *
+            from lstm.data_manipulator import load_data, save_data, preprocess_data
+
             data = load_data('data.json')
             preprocessed_data = preprocess_data(data["data"],
-                                  {{inputs.parameters.train_perc}},
-                                  {{inputs.parameters.window_size}})
+                                  {{inputs.parameters.train-frac}},
+                                  {{inputs.parameters.window-size}})
             filenames = ['training_data.json',
                         'testing_data.json',
                         'training_data_windows.json',
@@ -52,11 +53,11 @@ spec:
       # This section is where output artifacts are listed. They must be listed here, or else they will get deleted when the template completes. They must be under the `app` directory in order to be saved.
     outputs:
       artifacts:
-      - name: training_data
+      - name: training-data
         path: /app/training_data.json
-      - name: testing_data
+      - name: testing-data
         path: /app/testing_data.json
-      - name: training_data_windows
+      - name: training-data-windows
         path: /app/training_data_windows.json
-      - name: testing_data_windows
+      - name: testing-data-windows
         path: /app/testing_data_windows.json

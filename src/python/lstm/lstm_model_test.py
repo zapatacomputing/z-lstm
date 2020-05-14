@@ -100,7 +100,7 @@ class TestModel(unittest.TestCase):
 
         predictions = predict(model, test_data)
 
-        expected_predictions = {'data': [[1.8187190294265747]]}
+        expected_predictions = {'data': [[1.6918495893478394]]}
 
         self.assertTrue(isinstance(predictions, dict))
         self.assertTrue(isinstance(predictions["data"], list))

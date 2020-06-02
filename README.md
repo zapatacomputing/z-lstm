@@ -1,10 +1,38 @@
 # z-lstm
 
-This repository contains the source code and workflow templates to run [Prediction with LSTM](http://orquestra.io/docs/tutorial/lstm/) in Orquestra.
+## What is it?
 
-Example workflows can be found inside `example/`.
+`z-lstm` is a basic implementation to run predictions with LSTM in [Orquestra](http://orquestra.io/docs/) – a platform for performing computations on quantum computers developed by [Zapata Computing](https://www.zapatacomputing.com).
 
-## Submiting workflow jobs
+## Usage
+
+In order to use `z-lstm` in your workflow, you need to add it as a resource:
+
+```yaml
+resources:
+- name: z-lstm
+  type: git
+  parameters:
+    url: "git@github.com:zapatacomputing/z-lstm.git"
+    branch: "master"
+```
+
+and then import in a specific step:
+
+```yaml
+- - name: my-task
+    template: template-1
+    arguments:
+      parameters:
+      - param_1: 1
+      - resources: [z-lstm]
+```
+
+Once that is done you can:
+- use any template from `templates/` directory
+- use tasks which import resource in the python code.
+
+### Submiting workflow jobs
 
 To submit a workflow to Orquestra, first login:
 
@@ -48,7 +76,7 @@ python examples/plot_lstm.py <workflow result JSON>
 
 ---
 
-## Developing
+## Development and contribution
 
 Create an virtual environment:
 
@@ -65,7 +93,7 @@ make install
 
 ### Running tests
 
-Tests are located in `src/python/lstm/*_test.py`. Run them with:
+Tests are located in `src/python/lstm/*_test.py` and can be run with:
 
 ```
 make test

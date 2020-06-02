@@ -1,0 +1,63 @@
+# Every template YAML file must begin with a `spec`, without which your template won't compile.
+spec:
+
+  # The `templates` section is where you list one or more templates
+  templates:
+
+  # This is the name of the template, which is used to reference it in the workflow. This field is required.
+  - name: preprocess-data
+
+    # `generic-task` is the supertemplate that all templates (that don't contain a `steps` section) must inherit from
+    parent: generic-task
+
+    # This section is for the inputs needed to run the template. This section is required.
+    inputs:
+
+      # `parameters` represent initialization values for a template. 
+      parameters:
+      - name: docker-image
+        value: z-ml
+      - name: docker-tag
+        value: latest
+
+      # The `command` parameter is required because that is what is run by `generic-task`.
+      - name: command
+        value: python3 main.py
+
+      - name: train-frac
+        # This value acts as a default but can be overridden in the workflow
+        value: 0.8
+      - name: window-size
+        value: 10
+
+      # This section creates a script called `main.py` containing the code below under `data`. It must be under the `app` directory in order for the command above to locate it.
+      artifacts:
+      - name: data
+        path: /app/data.json
+      - name: main-script
+        path: /app/main.py
+        raw:
+          data: |
+            from lstm.data_manipulator import load_data, save_data, preprocess_data
+
+            data = load_data('data.json')
+            preprocessed_data = preprocess_data(data["data"],
+                                  {{inputs.parameters.train-frac}},
+                                  {{inputs.parameters.window-size}})
+            filenames = ['training_data.json',
+                        'testing_data.json',
+                        'training_data_windows.json',
+                        'testing_data_windows.json']
+            save_data(preprocessed_data, filenames)
+
+      # This section is where output artifacts are listed. They must be listed here, or else they will get deleted when the template completes. They must be under the `app` directory in order to be saved.
+    outputs:
+      artifacts:
+      - name: training-data
+        path: /app/training_data.json
+      - name: testing-data
+        path: /app/testing_data.json
+      - name: training-data-windows
+        path: /app/training_data_windows.json
+      - name: testing-data-windows
+        path: /app/testing_data_windows.json

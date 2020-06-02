@@ -1,0 +1,107 @@
+# Workflow API version
+ZapOSApiVersion: v1alpha1
+
+# Declares this as workflow
+kind: Workflow
+
+# List resources needed by workflow.
+resources:
+
+# A resource named `z-lstm` that is a public git repo. All the fields here are required except branch, which defaults to master.
+- name: z-lstm
+  type: git
+  parameters:
+    url: "git@github.com:zapatacomputing/z-lstm.git"
+    branch: "master"
+
+# Data to help you easily work with your workflow
+metadata:
+
+  # Prefix for workflow ID
+  generateName: lstm-tutorial-
+
+# Data for running the workflow
+spec:
+
+  # Think of this as identifying the `main` function -- this tells the workflow which template to start with
+  entrypoint: lstm
+
+  # Initializing global variables for use in workflow
+  arguments:
+    parameters:
+
+    # Where output data is stored -- Must be `quantum-engine` for compatibility with Orquestra data services
+    - s3-bucket: quantum-engine
+    # Path where output data is stored within the `s3-bucket` -- can be anything you want
+    - s3-key: tutorials/lstm/
+
+  # The steps of the workflow
+  templates:
+
+  # `lstm` is a template that just contains a list of `steps`, which are other templates
+  - name: lstm
+    steps:
+
+    # This template runs the `generate-data` template in the `hello` resource
+    - - name: generate-data
+        template: generate-data
+        arguments:
+          parameters:
+          - resources: [z-lstm]
+          - docker-image: z-ml
+          - docker-tag: latest
+          - time-range: "100"
+          - time-step: "0.1"
+          - noise-std: "0.1"
+    - - name: preprocess-data
+        template: preprocess-data
+        arguments:
+          parameters:
+          - resources: [z-lstm]
+          - docker-image: z-ml
+          - docker-tag: latest
+          - train-frac: "0.8"
+          - window-size: "10"
+          artifacts:
+          - name: data
+            from: '{{steps.generate-data.outputs.artifacts.data}}'
+    - - name: build-model
+        template: build-model
+        arguments:
+          parameters:
+          - resources: [z-lstm]
+          - docker-image: z-ml
+          - docker-tag: latest
+          - hnodes: "128"
+          - dropout: "0.1"
+          artifacts:
+          - name: preprocessed-data
+            from: '{{steps.preprocess-data.outputs.artifacts.testing-data-windows}}'
+    - - name: train-model
+        template: train-model
+        arguments:
+          parameters:
+          - resources: [z-lstm]
+          - docker-image: z-ml
+          - docker-tag: latest
+          - nepochs: "100"
+          - batch-size: "32"
+          - val-split: "0.1"
+          - learning-rate: "0.01"
+          artifacts:
+          - name: model
+            from: '{{steps.build-model.outputs.artifacts.model}}'
+          - name: training-data
+            from: '{{steps.preprocess-data.outputs.artifacts.training-data-windows}}'
+    - - name: predict-using-model
+        template: predict-using-model
+        arguments:
+          parameters:
+          - resources: [z-lstm]
+          - docker-image: z-ml
+          - docker-tag: latest
+          artifacts:
+          - name: model
+            from: '{{steps.train-model.outputs.artifacts.trained-model}}'
+          - name: testing-data
+            from: '{{steps.preprocess-data.outputs.artifacts.testing-data-windows}}'

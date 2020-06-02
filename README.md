@@ -28,11 +28,11 @@ and then import in a specific step:
       - resources: [z-lstm]
 ```
 
-Once that is done you can:
+Once that is done, you can:
 - use any template from `templates/` directory
 - use tasks which import resource in the python code.
 
-### Submiting workflow jobs
+### Submitting workflow jobs
 
 To submit a workflow to Orquestra, first login:
 

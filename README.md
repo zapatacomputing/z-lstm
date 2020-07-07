@@ -4,6 +4,9 @@
 
 `z-lstm` is a basic implementation to run predictions with LSTM in [Orquestra](http://orquestra.io/docs/) – a platform for performing computations on quantum computers developed by [Zapata Computing](https://www.zapatacomputing.com).
 
+**This project is part the series of Quantum and Classical Machine Learning tutorials in Orquestra, developed by the Quantum Machine Learning team in Zapata.**
+
+
 ## Usage
 
 In order to use `z-lstm` in your workflow, you need to add it as a resource:
